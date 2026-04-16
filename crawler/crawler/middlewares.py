@@ -53,7 +53,10 @@ class BlacklistMiddleware:
             yield req
 
     def process_spider_output(
-        self, response, result, spider: Spider  # type: ignore[no-untyped-def]
+        self,
+        response,
+        result,
+        spider: Spider,  # type: ignore[no-untyped-def]
     ):
         for item_or_request in result:
             if isinstance(item_or_request, Request) and is_blacklisted(item_or_request.url):
