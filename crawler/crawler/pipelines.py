@@ -6,8 +6,6 @@ import json
 import logging
 import os
 from typing import Any
-import subprocess
-import time
 
 logger = logging.getLogger(__name__)
 
@@ -17,40 +15,7 @@ class OperatorAggregatorPipeline:
 
     Scrapy emits one item per relevant page; we want one row per operator.
     """
-    
 
-    def start_hysteria_tunnel(self):
-        """
-        Starts the Hysteria2 client as a subprocess.
-        Requires the hysteria binary to be in your PATH or current folder.
-        """
-        # Configure these variables
-        EC2_IP = "15.134.208.10" # Extract from your string
-        PASSWORD = "super_secure_password_123"
-        SERVER_PORT = "443"
-        
-        # Command to start client in SOCKS5 mode
-        # Assuming you have the 'hysteria' binary installed locally
-        cmd = [
-            "hysteria", "client",
-            f"-u {EC2_IP}:{SERVER_PORT}",
-            f"-a {PASSWORD}",
-            "socks5://127.0.0.1:1080"
-        ]
-        
-        print(f"[*] Starting Hysteria2 Tunnel: {' '.join(cmd)}")
-        
-        # Popen runs it in background
-        self.process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        
-        # Give it a second to connect
-        time.sleep(2)
-
-    def stop_hysteria_tunnel(self):
-        if hasattr(self, 'process') and self.process:
-            self.process.terminate()
-            print("[*] Hysteria Tunnel Stopped")
-            
     def __init__(self) -> None:
         self._by_domain: dict[str, dict[str, Any]] = {}
 
