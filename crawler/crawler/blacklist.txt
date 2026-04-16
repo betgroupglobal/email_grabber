@@ -1,0 +1,18 @@
+# Domains that must NEVER be crawled. One per line. Lines starting with `#` ignored.
+# Includes Australian government regulators and law-enforcement.
+acma.gov.au
+oaic.gov.au
+gamblinghelponline.org.au
+nsw.gov.au
+vic.gov.au
+qld.gov.au
+sa.gov.au
+wa.gov.au
+nt.gov.au
+act.gov.au
+tas.gov.au
+gov.au
+afp.gov.au
+austrac.gov.au
+asic.gov.au
+ato.gov.au
