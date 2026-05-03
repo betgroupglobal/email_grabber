@@ -15,7 +15,6 @@ dependencies = []
 [project.optional-dependencies]
 dev = [
     "ruff==0.6.9",
-    "black==24.10.0",
     "mypy==1.11.2",
     "pytest==8.3.3",
     "pytest-asyncio==0.24.0",
@@ -36,13 +35,12 @@ target-version = "py311"
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "C4"]
 ignore = [
-    "E501",   # black handles line length
+    "E501",   # ruff format handles line length
     "B008",   # FastAPI Depends() / Form() in defaults is idiomatic
 ]
 
-[tool.black]
-line-length = 100
-target-version = ["py311"]
+[tool.ruff.format]
+# Use ruff's formatter (near-parity with Black). Keeps CI and pre-commit in sync.
 
 [tool.mypy]
 python_version = "3.11"
