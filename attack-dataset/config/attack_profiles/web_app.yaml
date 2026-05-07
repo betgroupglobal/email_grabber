@@ -1,0 +1,36 @@
+# Attack profile: Web Application
+# Pre-seeded phase configuration and tool preferences.
+
+profile: web_app
+description: "Standard web application penetration test attack profile"
+
+phases:
+  reconnaissance:
+    tools: [nmap, gobuster, burpsuite]
+    techniques: ["T1595", "T1590", "T1046"]
+    opsec: "Use passive recon first (Shodan, certs.sh). Active scanning only after auth."
+
+  initial_access:
+    tools: [burpsuite, sqlmap]
+    techniques: ["T1190", "T1078", "T1566"]
+    opsec: "Limit requests to avoid rate-limit tripping. Rotate user agents."
+
+  execution:
+    tools: [burpsuite, netcat]
+    techniques: ["T1059", "T1203"]
+    opsec: "Use in-memory payloads. Avoid writing to disk."
+
+  privilege_escalation:
+    tools: [metasploit]
+    techniques: ["T1068", "T1134", "T1548"]
+    opsec: "Prefer local exploits over noisy network escalation."
+
+  persistence:
+    tools: [netcat]
+    techniques: ["T1505", "T1053", "T1543"]
+    opsec: "Minimise persistence footprint. Use volatile persistence where possible."
+
+  exfiltration:
+    tools: [netcat]
+    techniques: ["T1041", "T1048"]
+    opsec: "Encrypt exfil data. Use HTTPS C2 or DNS tunnelling."

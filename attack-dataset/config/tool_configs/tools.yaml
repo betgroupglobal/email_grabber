@@ -1,0 +1,46 @@
+# Tool configuration registry
+# Each tool entry defines how the orchestrator invokes and interprets it.
+
+tools:
+  nmap:
+    binary: nmap
+    default_args: ["-sV", "-O", "--open", "-T4", "--top-ports", "1000", "-oX", "-"]
+    parse_format: xml
+    noise_level: high
+    opsec_notes: "Use -T2 or -T1 for slower, quieter scans. Spoof source IP with -S."
+
+  masscan:
+    binary: masscan
+    default_args: ["--rate", "500", "-oX", "-"]
+    parse_format: xml
+    noise_level: medium
+    opsec_notes: "Set low rate (--rate 100) and restrict ports to avoid triggering IDS."
+
+  metasploit:
+    binary: msfconsole
+    rpc_host: "127.0.0.1"
+    rpc_port: 55553
+    noise_level: high
+    opsec_notes: "Use custom profiles and encoding. Avoid default payload signatures."
+
+  burpsuite:
+    proxy_host: "127.0.0.1"
+    proxy_port: 8080
+    noise_level: medium
+    opsec_notes: "Customise User-Agent header. Match target site traffic baseline."
+
+  sqlmap:
+    binary: sqlmap
+    default_args: ["--batch", "--level", "1", "--risk", "1"]
+    noise_level: high
+    opsec_notes: "Use --delay and --random-agent to reduce detection likelihood."
+
+  gobuster:
+    binary: gobuster
+    noise_level: high
+    opsec_notes: "Reduce thread count (-t 5) and add delays between requests."
+
+  netcat:
+    binary: nc
+    noise_level: low
+    opsec_notes: "Prefer encrypted channels (ncat --ssl) for C2 communication."

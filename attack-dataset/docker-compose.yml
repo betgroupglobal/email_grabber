@@ -1,0 +1,110 @@
+version: "3.9"
+
+services:
+  # ── Infrastructure ───────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: opsec
+      POSTGRES_PASSWORD: opsec
+      POSTGRES_DB: attack_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opsec"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  qdrant:
+    image: qdrant/qdrant:v1.9.2
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:6333/readyz || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── Knowledge Engine ─────────────────────────────────────────────────────────
+  knowledge-engine:
+    build:
+      context: ./backend/knowledge_engine
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_DSN: postgresql://opsec:opsec@postgres:5432/attack_db
+      QDRANT_HOST: qdrant
+      QDRANT_PORT: "6333"
+      DATASET_PATH: /data/Attack_Dataset.csv
+    volumes:
+      - ./Attack_Dataset.csv:/data/Attack_Dataset.csv:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+
+  # ── OpSec Monitor ────────────────────────────────────────────────────────────
+  opsec-monitor:
+    build:
+      context: ./backend/opsec_monitor
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8002"
+
+  # ── Real-time Analyzer ───────────────────────────────────────────────────────
+  realtime-analyzer:
+    build:
+      context: ./backend/realtime_analyzer
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      ANALYZER_ADDR: ":8001"
+      KNOWLEDGE_ENGINE_URL: "http://knowledge-engine:8000"
+    depends_on:
+      - knowledge-engine
+    cap_add:
+      - NET_RAW          # needed for nmap OS detection
+      - NET_ADMIN
+
+  # ── Orchestrator ─────────────────────────────────────────────────────────────
+  orchestrator:
+    build:
+      context: ./backend/orchestrator
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: "3001"
+      KNOWLEDGE_ENGINE_URL: "http://knowledge-engine:8000"
+      ANALYZER_URL: "http://realtime-analyzer:8001"
+      OPSEC_URL: "http://opsec-monitor:8002"
+    depends_on:
+      - knowledge-engine
+      - realtime-analyzer
+      - opsec-monitor
+
+  # ── Dashboard ─────────────────────────────────────────────────────────────────
+  dashboard:
+    build:
+      context: ./frontend/dashboard
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_ORCHESTRATOR_URL: "http://localhost:3001"
+        REACT_APP_WS_URL: "ws://localhost:3001"
+    ports:
+      - "3000:80"
+    depends_on:
+      - orchestrator
+
+volumes:
+  pg_data:
+  qdrant_data:
