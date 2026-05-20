@@ -22,6 +22,7 @@ const {
 
 // Replace plain axios with enhanced version
 const axios = createEnhancedAxios({ timeout: 30000 });
+const { appendTerminalLine, getTerminalHistory } = require("./terminal-buffer");
 
 const KNOWLEDGE_ENGINE = process.env.KNOWLEDGE_ENGINE_URL || "http://127.0.0.1:8000";
 const ANALYZER_URL     = process.env.ANALYZER_URL         || "http://localhost:8001";
@@ -2202,6 +2203,43 @@ app.post("/engagements/:id/live/force-replan", async (req, res) => {
   );
   broadcast(req.params.id, eng);
   res.json({ result, live_council: eng.live_council });
+});
+
+app.get("/engagements/:id/terminal/history", (req, res) => {
+  const engId = validateEngagementId(req.params.id);
+  const eng = engagements.get(engId);
+  if (!eng) {
+    return res.status(404).json({ error: "Engagement not found", code: "ENGAGEMENT_NOT_FOUND" });
+  }
+  const limit = Math.min(parseInt(req.query.limit, 10) || 200, 500);
+  res.json({
+    engagement_id: engId,
+    lines: getTerminalHistory(engagements, engId, limit),
+    detach_safe: true,
+  });
+});
+
+app.get("/engagements/:id/active-runs", (req, res) => {
+  const engId = validateEngagementId(req.params.id);
+  const eng = engagements.get(engId);
+  if (!eng) {
+    return res.status(404).json({ error: "Engagement not found", code: "ENGAGEMENT_NOT_FOUND" });
+  }
+  const ga = eng.guided_autonomous || {};
+  const gaActive = ga.status === "running" || ga.status === "starting" || ga.status === "stopping";
+  const chainActive = eng.chain_execution?.status === "running";
+  res.json({
+    engagement_id: engId,
+    detach_safe: true,
+    status: eng.status,
+    guided_autonomous: ga.status
+      ? { status: ga.status, current_phase: ga.current_phase ?? 0, current_phase_title: ga.current_phase_title }
+      : null,
+    chain_execution: eng.chain_execution
+      ? { status: eng.chain_execution.status, execution_id: eng.chain_execution.execution_id }
+      : null,
+    active: gaActive || chainActive,
+  });
 });
 
 app.get("/engagements/:id/reasoning-trace", (req, res) => {
@@ -4886,11 +4924,16 @@ wss.on("connection", (ws, req) => {
     case 'terminal':
       if (!terminalSubscribers.has(engId)) terminalSubscribers.set(engId, new Set());
       terminalSubscribers.get(engId).add(ws);
+      // Disconnect is broadcast-only: never stop engagements or chain runs.
       ws.on("close", () => terminalSubscribers.get(engId)?.delete(ws));
       console.log(`[ws] terminal client connected to engagement ${engId}`);
+      for (const line of getTerminalHistory(engagements, engId)) {
+        if (ws.readyState === 1) ws.send(JSON.stringify(line));
+      }
       ws.send(JSON.stringify({
         type: 'info',
-        content: '🔗 Terminal connection established. Waiting for attack execution...'
+        content: '🔗 Terminal connection established. Run continues server-side if you disconnect.',
+        timestamp: new Date().toISOString(),
       }));
       break;
       
@@ -4953,6 +4996,7 @@ wss.on("connection", (ws, req) => {
       // Regular engagement subscription
       if (!subscribers.has(engId)) subscribers.set(engId, new Set());
       subscribers.get(engId).add(ws);
+      // Disconnect is broadcast-only: never stop guided autonomous or chain execution.
       ws.on("close", () => subscribers.get(engId)?.delete(ws));
       console.log(`[ws] client subscribed to engagement ${engId}`);
       // Send current state immediately
@@ -5031,15 +5075,20 @@ function emitAttackEvent(engId, event) {
 }
 
 function broadcastTerminal(engId, message, type = 'info') {
+  const timestamp = new Date().toISOString();
+  const payload = {
+    type: type,
+    content: message,
+    timestamp,
+  };
+
+  appendTerminalLine(engagements, engId, payload);
+
   const clients = terminalSubscribers.get(engId);
   if (clients) {
-    const payload = JSON.stringify({
-      type: type,
-      content: message,
-      timestamp: new Date().toISOString(),
-    });
+    const msg = JSON.stringify(payload);
     clients.forEach((ws) => {
-      if (ws.readyState === 1) ws.send(payload);
+      if (ws.readyState === 1) ws.send(msg);
     });
   }
 

@@ -420,7 +420,7 @@ export function UnifiedOperationsHub() {
               {running && (
                 <span className="flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/40 px-2.5 py-0.5 text-[10px] text-cyan-300">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400" />
-                  Run active
+                  Run active · continues in background if you leave
                 </span>
               )}
               {ctx.status?.policy?.allow_high_risk && (

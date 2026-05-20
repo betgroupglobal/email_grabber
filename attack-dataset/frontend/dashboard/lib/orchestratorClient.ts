@@ -155,6 +155,14 @@ export interface GuidedAutonomousStatus {
     fingerprint?: { os?: string; services?: unknown[] };
   } | null;
   fingerprint?: { os?: string; services?: unknown[] } | null;
+  /** Server-side run continues when the browser disconnects */
+  detach_safe?: boolean;
+}
+
+export interface TerminalHistoryLine {
+  type?: string;
+  content: string;
+  timestamp?: string;
 }
 
 export async function startGuidedAutonomous(body: {
@@ -235,6 +243,21 @@ export async function fetchReasoningTrace(engagementId: string): Promise<{
   );
   if (!res.ok) return null;
   return res.json();
+}
+
+export async function fetchTerminalHistory(
+  engagementId: string,
+  limit = 200
+): Promise<TerminalHistoryLine[]> {
+  const res = await fetch(
+    orchestratorHttp(
+      `/engagements/${encodeURIComponent(engagementId)}/terminal/history?limit=${limit}`
+    ),
+    orchestratorFetchInit()
+  );
+  if (!res.ok) return [];
+  const data = (await res.json()) as { lines?: TerminalHistoryLine[] };
+  return data.lines ?? [];
 }
 
 export function formatExecuteChainError(body: ExecuteChainErrorBody): string {

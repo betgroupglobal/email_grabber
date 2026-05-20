@@ -42,6 +42,7 @@ function loadOpsSession(): {
   aggression: number;
   roeAck: boolean;
   webOnly: boolean;
+  engagementId?: string | null;
 } | null {
   if (typeof window === "undefined") return null;
   try {
@@ -52,12 +53,14 @@ function loadOpsSession(): {
       aggression?: number;
       roeAck?: boolean;
       webOnly?: boolean;
+      engagementId?: string | null;
     };
     return {
       target: data.target || DEFAULT_GUIDED_TARGET,
       aggression: data.aggression ?? 5,
       roeAck: Boolean(data.roeAck),
       webOnly: data.webOnly !== false,
+      engagementId: data.engagementId ?? null,
     };
   } catch {
     return null;
@@ -69,6 +72,7 @@ function saveOpsSession(payload: {
   aggression: number;
   roeAck: boolean;
   webOnly: boolean;
+  engagementId?: string | null;
 }) {
   if (typeof window === "undefined") return;
   try {
@@ -141,6 +145,7 @@ export function GuidedAutonomousPanel({
   const [replanning, setReplanning] = useState(false);
   const [chainsVersion, setChainsVersion] = useState<number | undefined>();
   const [orchestratorWsConnected, setOrchestratorWsConnected] = useState(false);
+  const [resumedBackgroundRun, setResumedBackgroundRun] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
   const prevEngagementRef = useRef<string | null>(null);
 
@@ -160,9 +165,14 @@ export function GuidedAutonomousPanel({
   }, []);
 
   useEffect(() => {
-    if (!initialEngagementId || engagementId) return;
-    setEngagementId(initialEngagementId);
-    void refreshStatus(initialEngagementId);
+    if (engagementId) return;
+    const id = initialEngagementId || loadOpsSession()?.engagementId;
+    if (!id) return;
+    setEngagementId(id);
+    if (!initialEngagementId && loadOpsSession()?.engagementId === id) {
+      setResumedBackgroundRun(true);
+    }
+    void refreshStatus(id);
   }, [initialEngagementId, engagementId, refreshStatus]);
 
   useEffect(() => {
@@ -171,8 +181,9 @@ export function GuidedAutonomousPanel({
       aggression,
       roeAck,
       webOnly,
+      engagementId,
     });
-  }, [targetRaw, aggression, roeAck, webOnly]);
+  }, [targetRaw, aggression, roeAck, webOnly, engagementId]);
 
   useEffect(() => {
     const prev = prevEngagementRef.current;
@@ -238,6 +249,8 @@ export function GuidedAutonomousPanel({
     return () => {
       clearInterval(poll);
       intentionalClose = true;
+      // Intentional: close WS only — never call stopGuidedAutonomous here.
+      // Runs continue server-side when the user navigates away or closes the tab.
       if (wsRef.current === ws) {
         wsRef.current = null;
       }
@@ -436,6 +449,14 @@ export function GuidedAutonomousPanel({
             <AlertTriangle className="h-4 w-4 shrink-0" />
             JAILBREAK_API_KEY not set — pipeline uses heuristic fallback (logs show{" "}
             <code className="text-amber-100">heuristic_no_api_key</code>).
+          </div>
+        )}
+
+        {resumedBackgroundRun && running && (
+          <div className="mb-4 flex items-center gap-2 rounded-lg border border-cyan-500/30 bg-cyan-950/30 px-3 py-2 text-sm text-cyan-200">
+            <Bot className="h-4 w-4 shrink-0" />
+            Reconnected to an in-progress run — execution continues in the background on the
+            orchestrator.
           </div>
         )}
 

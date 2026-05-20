@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { orchestratorWs } from "@/lib/config";
+import { fetchTerminalHistory } from "@/lib/orchestratorClient";
 import type { CouncilWsEvent, ReasoningTraceEntry } from "@/lib/liveCouncil";
 import { cn } from "@/lib/utils";
 
@@ -549,86 +550,121 @@ export default function TerminalOutput({
   useEffect(() => {
     if (!isActive || !engagementId) return;
 
-    setLines([]);
+    let cancelled = false;
     setIsConnected(false);
     seenCouncilIds.current.clear();
     seenReasoningIds.current.clear();
     seenSystemKeys.current.clear();
-    lineCounter.current = 0;
 
     let intentionalClose = false;
-    const wsUrl = `${orchestratorWs(`/terminal/${engagementId}`)}?engagement=${engagementId}`;
-    const ws = new WebSocket(wsUrl);
-    wsRef.current = ws;
 
-    ws.onopen = () => {
-      setIsConnected(true);
-    };
+    const connect = async () => {
+      const history = await fetchTerminalHistory(engagementId);
+      if (cancelled) return;
 
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data) as {
-          type?: string;
-          content?: string;
-          command?: string;
-          timestamp?: string;
-        };
-        const content = data.content ?? event.data;
-        const rawType = data.type || "info";
-        const lineType = normalizeLineType(rawType, String(content));
-        const category = inferCategory(rawType, String(content));
-        const isThink =
-          String(content).toLowerCase().startsWith("[think]") || lineType === "think";
-
-        addLine({
-          timestamp: data.timestamp || new Date().toISOString(),
-          type: isThink ? "think" : lineType,
-          category: isThink ? "think" : category,
-          content: String(content),
-          command: data.command,
-          source: "ws",
-          councilBadge:
-            category === "council" && String(content).includes("DIRECTIVE")
-              ? { kind: "directive", action: String(content).match(/DIRECTIVE:\s*(\w+)/i)?.[1] }
-              : category === "council" && String(content).includes("COUNCIL TURN")
-                ? {
-                    kind: "turn",
-                    turn: Number(String(content).match(/TURN\s+(\d+)/i)?.[1]) || undefined,
-                  }
-                : undefined,
-        });
-      } catch {
-        addLine({
-          timestamp: new Date().toISOString(),
-          type: "info",
-          category: "general",
-          content: event.data,
-          source: "ws",
-        });
+      if (history.length > 0) {
+        lineCounter.current = history.length;
+        setLines(
+          history.map((entry, index) => {
+            const content = entry.content ?? "";
+            const rawType = entry.type || "info";
+            const lineType = normalizeLineType(rawType, content);
+            const category = inferCategory(rawType, content);
+            const isThink =
+              content.toLowerCase().startsWith("[think]") || lineType === "think";
+            return {
+              id: `hist-${index}-${entry.timestamp || index}`,
+              timestamp: entry.timestamp || new Date().toISOString(),
+              type: isThink ? "think" : lineType,
+              category: isThink ? "think" : category,
+              content,
+              source: "ws" as const,
+            };
+          })
+        );
+      } else {
+        lineCounter.current = 0;
+        setLines([]);
       }
+
+      const wsUrl = `${orchestratorWs(`/terminal/${engagementId}`)}?engagement=${engagementId}`;
+      const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
+
+      ws.onopen = () => {
+        if (!cancelled) setIsConnected(true);
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data) as {
+            type?: string;
+            content?: string;
+            command?: string;
+            timestamp?: string;
+          };
+          const content = data.content ?? event.data;
+          const rawType = data.type || "info";
+          const lineType = normalizeLineType(rawType, String(content));
+          const category = inferCategory(rawType, String(content));
+          const isThink =
+            String(content).toLowerCase().startsWith("[think]") || lineType === "think";
+
+          addLine({
+            timestamp: data.timestamp || new Date().toISOString(),
+            type: isThink ? "think" : lineType,
+            category: isThink ? "think" : category,
+            content: String(content),
+            command: data.command,
+            source: "ws",
+            councilBadge:
+              category === "council" && String(content).includes("DIRECTIVE")
+                ? { kind: "directive", action: String(content).match(/DIRECTIVE:\s*(\w+)/i)?.[1] }
+                : category === "council" && String(content).includes("COUNCIL TURN")
+                  ? {
+                      kind: "turn",
+                      turn: Number(String(content).match(/TURN\s+(\d+)/i)?.[1]) || undefined,
+                    }
+                  : undefined,
+          });
+        } catch {
+          addLine({
+            timestamp: new Date().toISOString(),
+            type: "info",
+            category: "general",
+            content: event.data,
+            source: "ws",
+          });
+        }
+      };
+
+      ws.onerror = () => {};
+
+      ws.onclose = () => {
+        setIsConnected(false);
+        if (!intentionalClose && !cancelled) {
+          addLine({
+            timestamp: new Date().toISOString(),
+            type: "warning",
+            category: "errors",
+            content: "Terminal disconnected — run continues server-side; reconnecting…",
+            source: "ws",
+          });
+        }
+      };
     };
 
-    ws.onerror = () => {};
-
-    ws.onclose = () => {
-      setIsConnected(false);
-      if (!intentionalClose) {
-        addLine({
-          timestamp: new Date().toISOString(),
-          type: "warning",
-          category: "errors",
-          content: "Terminal connection closed — reconnecting on next engagement",
-          source: "ws",
-        });
-      }
-    };
+    void connect();
 
     return () => {
+      cancelled = true;
       intentionalClose = true;
-      if (wsRef.current === ws) {
+      // Intentional: close WS only — never stop server-side execution on unmount.
+      if (wsRef.current) {
+        wsRef.current.close();
         wsRef.current = null;
       }
-      ws.close();
+      setIsConnected(false);
     };
   }, [engagementId, isActive, addLine]);
 

@@ -1292,10 +1292,15 @@ function createGuidedAutonomousService(deps) {
           })
         : null);
 
+    const gaActive =
+      ga.status === "running" || ga.status === "starting" || ga.status === "stopping";
+    const chainActive = eng.chain_execution?.status === "running";
+
     return {
       engagement_id: engagementId,
       target: eng.target,
       status: eng.status,
+      detach_safe: gaActive || chainActive,
       policy: { allow_high_risk: ALLOW_HIGH_RISK },
       guided_autonomous: {
         ...ga,
