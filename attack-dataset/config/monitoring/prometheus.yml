@@ -1,0 +1,108 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'opsec-production'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# Rule files
+rule_files:
+  - "alerts.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: 'prometheus'
+
+  # Node Exporter for system metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          service: 'node-exporter'
+
+  # cAdvisor for container metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+        labels:
+          service: 'cadvisor'
+
+  # Knowledge Engine
+  - job_name: 'knowledge-engine'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['knowledge-engine:8000']
+        labels:
+          service: 'knowledge-engine'
+          component: 'backend'
+
+  # Orchestrator
+  - job_name: 'orchestrator'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['orchestrator:3001']
+        labels:
+          service: 'orchestrator'
+          component: 'backend'
+
+  # Integration Hub
+  - job_name: 'integration-hub'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['integration-hub:8500']
+        labels:
+          service: 'integration-hub'
+          component: 'backend'
+
+  # Dashboard
+  - job_name: 'dashboard'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['dashboard:3000']
+        labels:
+          service: 'dashboard'
+          component: 'frontend'
+
+  # PostgreSQL
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+        labels:
+          service: 'postgres'
+          component: 'database'
+
+  # Redis
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+        labels:
+          service: 'redis'
+          component: 'cache'
+
+  # Nginx
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx-exporter:9113']
+        labels:
+          service: 'nginx'
+          component: 'proxy'
+
+  # Qdrant
+  - job_name: 'qdrant'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['qdrant:6333']
+        labels:
+          service: 'qdrant'
+          component: 'database'

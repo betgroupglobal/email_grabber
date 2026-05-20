@@ -9,6 +9,7 @@ type Config struct {
 	KnowledgeEngineURL string
 	OrchestratorURL    string
 	NmapBin            string
+	ServiceAPIKey      string
 }
 
 func Load() *Config {
@@ -17,6 +18,7 @@ func Load() *Config {
 		KnowledgeEngineURL: getenv("KNOWLEDGE_ENGINE_URL", "http://localhost:8000"),
 		OrchestratorURL:    getenv("ORCHESTRATOR_URL", "http://localhost:3000"),
 		NmapBin:            getenv("NMAP_BIN", "nmap"),
+		ServiceAPIKey:      getenv("SERVICE_API_KEY_ANALYZER", ""),
 	}
 }
 

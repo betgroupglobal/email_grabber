@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "projectName": "attack-dataset",
+  "userName": "developer",
+  "skillLevel": "intermediate",
+  "outputFolder": ".vibecheck/flow",
+  "planningArtifacts": ".vibecheck/flow/planning-artifacts",
+  "implementationArtifacts": ".vibecheck/flow/implementation-artifacts",
+  "installedAt": "2026-05-15T02:59:44.769Z",
+  "ide": [
+    "cursor"
+  ]
+}

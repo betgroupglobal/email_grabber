@@ -10,7 +10,7 @@ RUN CGO_ENABLED=0 go build -o /analyzer .
 # ── runtime ───────────────────────────────────────────────────────────────────
 FROM alpine:3.19
 
-RUN apk add --no-cache nmap ca-certificates
+RUN apk add --no-cache nmap nmap-scripts ca-certificates
 
 COPY --from=builder /analyzer /usr/local/bin/analyzer
 

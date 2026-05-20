@@ -1,0 +1,85 @@
+name: sqlmap
+version: 1.0.0
+category: security_tools
+description: sqlmap — automated SQL injection detection (safe defaults, ROE-gated crawl)
+author: OpsecAI Team
+license: MIT
+
+execution:
+  local:
+    binary: sqlmap
+    timeout: 600
+    sandbox: true
+    max_crawl_depth: 2
+
+schemas:
+  input:
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - test_url
+          - crawl_and_test
+        default: test_url
+      target:
+        type: string
+        description: Target URL with parameters to test
+      url:
+        type: string
+        description: Full URL (overrides target)
+      method:
+        type: string
+        enum: [GET, POST]
+        default: GET
+      data:
+        type: string
+        description: POST body for injection testing
+      level:
+        type: integer
+        default: 1
+      risk:
+        type: integer
+        default: 1
+      roe_acknowledged:
+        type: boolean
+        default: false
+      web_only:
+        type: boolean
+        default: true
+      council_approved:
+        type: boolean
+        default: false
+    required:
+      - operation
+
+  output:
+    type: object
+    properties:
+      success:
+        type: boolean
+      blocked_reason:
+        type: string
+      terminal_lines:
+        type: array
+
+opsec:
+  enabled: true
+  risk_level: high
+  noise_level: medium
+  detection_methods:
+    - WAF SQLi signatures
+    - Database error logging
+  evasion_recommendations:
+    - Detection-only level/risk 1
+    - Avoid crawl in production without ROE
+
+dependencies:
+  - name: sqlmap
+    version: ">=1.7"
+    install_url: https://sqlmap.org/
+
+health_check:
+  enabled: true
+  command: "sqlmap --version"
+  expected_output: "sqlmap"

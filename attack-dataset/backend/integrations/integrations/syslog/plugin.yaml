@@ -1,0 +1,108 @@
+name: syslog
+version: 1.0.0
+category: log_analysis
+description: Syslog log analysis and security event detection
+author: OpsecAI Team
+license: MIT
+
+execution:
+  local:
+    binary: logger
+    timeout: 60
+    alternate_paths:
+      - /usr/bin/logger
+      - /usr/local/bin/logger
+    sandbox: false
+
+schemas:
+  input:
+    type: object
+    required:
+      - log_source
+    properties:
+      log_source:
+        type: string
+        description: Path to log file or syslog server address
+        examples:
+          - "/var/log/auth.log"
+          - "/var/log/syslog"
+          - "192.168.1.100:514"
+      analysis_type:
+        type: string
+        enum: [security_events, error_detection, anomaly_detection, compliance]
+        description: Type of log analysis to perform
+        default: security_events
+      time_range:
+        type: string
+        description: Time range for analysis (e.g., "1h", "24h", "7d")
+        default: "1h"
+      patterns:
+        type: array
+        description: Custom patterns to search for
+        items:
+          type: string
+
+  output:
+    type: object
+    properties:
+      events_found:
+        type: array
+        description: Security events found in logs
+        items:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              description: Event timestamp
+            severity:
+              type: string
+              description: Event severity
+            message:
+              type: string
+              description: Log message
+            source:
+              type: string
+              description: Log source
+      summary:
+        type: object
+        description: Summary of log analysis
+        properties:
+          total_events:
+            type: integer
+          critical_events:
+            type: integer
+          warning_events:
+            type: integer
+          info_events:
+            type: integer
+
+opsec:
+  enabled: true
+  risk_level: low
+  noise_level: low
+  detection_methods:
+    - Log file analysis
+    - Pattern matching
+    - Security event detection
+  evasion_recommendations:
+    - Use encrypted log transport
+    - Implement log aggregation
+    - Monitor log access permissions
+
+dependencies:
+  - name: python
+    version: ">=3.6"
+
+health_check:
+  enabled: true
+  command: test -f /var/log/syslog
+  interval: 300
+  timeout: 5
+
+hooks:
+  pre_execution:
+    - validate_log_source
+    - check_file_permissions
+  post_execution:
+    - archive_results
+    - update_statistics

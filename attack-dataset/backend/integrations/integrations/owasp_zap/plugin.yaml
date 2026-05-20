@@ -1,0 +1,111 @@
+name: owasp_zap
+version: 1.0.0
+category: web_security
+description: OWASP ZAP web application security scanner integration
+author: OpsecAI Team
+license: MIT
+
+execution:
+  remote:
+    base_url: http://localhost:8080
+    timeout: 600
+    auth:
+      type: api_key
+      header: X-ZAP-API-Key
+  
+schemas:
+  input:
+    type: object
+    required:
+      - target_url
+    properties:
+      target_url:
+        type: string
+        description: Target URL to scan
+        examples:
+          - "https://example.com"
+          - "http://192.168.1.100:8080"
+      scan_type:
+        type: string
+        enum: [spider, active_scan, passive_scan]
+        description: Type of security scan to perform
+        default: passive_scan
+      max_depth:
+        type: integer
+        description: Maximum depth for spider scan
+        default: 5
+      context_name:
+        type: string
+        description: ZAP context name for the scan
+        default: "Default Context"
+
+  output:
+    type: object
+    properties:
+      scan_id:
+        type: string
+        description: Unique identifier for the scan
+      scan_status:
+        type: string
+        description: Current scan status
+      alerts:
+        type: array
+        description: Security alerts found during scan
+        items:
+          type: object
+          properties:
+            risk:
+              type: string
+              description: Risk level (High, Medium, Low, Informational)
+            name:
+              type: string
+              description: Alert name
+            description:
+              type: string
+              description: Alert description
+            url:
+              type: string
+              description: URL where alert was found
+      scan_progress:
+        type: integer
+        description: Scan progress percentage
+      start_time:
+        type: string
+        description: Scan start time
+      end_time:
+        type: string
+        description: Scan end time
+
+opsec:
+  enabled: true
+  risk_level: medium
+  noise_level: high
+  detection_methods:
+    - HTTP requests to target
+    - Application scanning
+    - Vulnerability probing
+  evasion_recommendations:
+    - Use scan delay between requests
+    - Randomize user agent
+    - Configure appropriate scan policy
+    - Use authentication context when available
+
+dependencies:
+  - name: requests
+    version: ">=2.28.0"
+  - name: zaproxy
+    install_url: https://www.zaproxy.org/download/
+
+health_check:
+  enabled: true
+  endpoint: http://localhost:8080/JSON/core/view/version/
+  interval: 60
+  timeout: 10
+
+hooks:
+  pre_execution:
+    - validate_url
+    - check_zap_availability
+  post_execution:
+    - generate_report
+    - cleanup_session

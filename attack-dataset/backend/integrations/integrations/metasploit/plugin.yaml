@@ -1,0 +1,127 @@
+name: metasploit
+version: 1.0.0
+category: security_tools
+description: Metasploit Framework integration — module listing, auxiliary scans, gated exploits, msfvenom payloads
+author: OpsecAI Team
+license: MIT
+
+execution:
+  local:
+    binary: msfconsole
+    msfvenom_binary: msfvenom
+    timeout: 300
+    sandbox: true
+    default_dry_run: true
+  remote:
+    rpc_host: ${MSF_RPC_HOST:127.0.0.1}
+    rpc_port: ${MSF_RPC_PORT:55553}
+    rpc_token: ${MSF_RPC_TOKEN:}
+    timeout: 120
+
+schemas:
+  input:
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - list_modules
+          - run_auxiliary
+          - run_exploit
+          - generate_payload
+        default: list_modules
+      target:
+        type: string
+        description: Target host or URL (RHOSTS / LHOST context)
+      module:
+        type: string
+        description: Metasploit module path (e.g. auxiliary/scanner/http/http_version)
+      module_type:
+        type: string
+        enum: [auxiliary, exploit, payload]
+        default: auxiliary
+      options:
+        type: object
+        description: Module options (RHOSTS, RPORT, etc.)
+      dry_run:
+        type: boolean
+        default: true
+        description: When true, build resource script only — do not execute exploit/payload
+      roe_acknowledged:
+        type: boolean
+        default: false
+      web_only:
+        type: boolean
+        default: true
+      council_approved:
+        type: boolean
+        default: false
+        description: Required for live exploit when LIVE_REQUIRE_APPROVAL is set
+      payload:
+        type: string
+        description: msfvenom payload (e.g. linux/x64/shell_reverse_tcp)
+      format:
+        type: string
+        description: msfvenom output format (raw, elf, exe)
+      encoder:
+        type: string
+        description: Optional msfvenom encoder
+      lhost:
+        type: string
+      lport:
+        type: integer
+      search:
+        type: string
+        description: Module search filter for list_modules
+    required:
+      - operation
+
+  output:
+    type: object
+    properties:
+      success:
+        type: boolean
+      operation:
+        type: string
+      terminal_lines:
+        type: array
+        items:
+          type: string
+      cli_output:
+        type: string
+      structured:
+        type: object
+      dry_run:
+        type: boolean
+      blocked_reason:
+        type: string
+
+opsec:
+  enabled: true
+  risk_level: high
+  noise_level: high
+  detection_methods:
+    - EDR/AV Metasploit signatures
+    - Network IDS exploit patterns
+    - Default handler ports (4444)
+  evasion_recommendations:
+    - Custom payloads and encoding via msfvenom
+    - Non-default LPORT/LHOST
+    - Auxiliary scanners before exploit attempts
+    - Dry-run resource scripts for operator review
+
+dependencies:
+  - name: metasploit-framework
+    version: ">=6.0"
+    install_url: https://github.com/rapid7/metasploit-framework
+
+health_check:
+  enabled: true
+  command: "msfconsole --version"
+  expected_output: "Framework"
+
+hooks:
+  before_execution:
+    - validate_roe_and_scope
+  after_execution:
+    - emit_terminal_lines

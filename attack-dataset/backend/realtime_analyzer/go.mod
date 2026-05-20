@@ -1,3 +1,3 @@
 module github.com/opsec/realtime_analyzer
 
-go 1.26.1
+go 1.22

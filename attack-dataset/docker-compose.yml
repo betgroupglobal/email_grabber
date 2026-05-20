@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   # ── Infrastructure ───────────────────────────────────────────────────────────
   postgres:
@@ -12,6 +10,7 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+      - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U opsec"]
       interval: 5s
@@ -25,8 +24,15 @@ services:
       - "6334:6334"
     volumes:
       - qdrant_data:/qdrant/storage
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
     healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://localhost:6333/readyz || exit 1"]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -34,8 +40,8 @@ services:
   # ── Knowledge Engine ─────────────────────────────────────────────────────────
   knowledge-engine:
     build:
-      context: ./backend/knowledge_engine
-      dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: knowledge_engine/Dockerfile
     ports:
       - "8000:8000"
     environment:
@@ -43,13 +49,21 @@ services:
       QDRANT_HOST: qdrant
       QDRANT_PORT: "6333"
       DATASET_PATH: /data/Attack_Dataset.csv
+      INTEGRATION_HUB_URL: http://integration-hub:8500
+      JAILBREAK_VIA_HUB: "true"
+      JAILBREAK_API_KEY: ${JAILBREAK_API_KEY}
+      SERVICE_API_KEY_INTEGRATION_HUB: service-key-integration-hub-12345
+      SERVICE_API_KEY_ORCHESTRATOR: service-key-orchestrator-12345
+      SERVICE_API_KEY_ANALYZER: service-key-analyzer-12345
+      SERVICE_API_KEY_MONITOR: service-key-monitor-12345
     volumes:
       - ./Attack_Dataset.csv:/data/Attack_Dataset.csv:ro
+      - ./backend/shared:/app/shared  # Shared modules for imports
     depends_on:
       postgres:
         condition: service_healthy
       qdrant:
-        condition: service_healthy
+        condition: service_started
 
   # ── OpSec Monitor ────────────────────────────────────────────────────────────
   opsec-monitor:
@@ -58,6 +72,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8002:8002"
+    volumes:
+      - ./backend/shared:/app/shared  # Shared modules for imports
 
   # ── Real-time Analyzer ───────────────────────────────────────────────────────
   realtime-analyzer:
@@ -68,7 +84,10 @@ services:
       - "8001:8001"
     environment:
       ANALYZER_ADDR: ":8001"
+      NMAP_BIN: nmap
       KNOWLEDGE_ENGINE_URL: "http://knowledge-engine:8000"
+      ORCHESTRATOR_URL: "http://orchestrator:3001"
+      SERVICE_API_KEY_ANALYZER: service-key-analyzer-12345
     depends_on:
       - knowledge-engine
     cap_add:
@@ -87,10 +106,59 @@ services:
       KNOWLEDGE_ENGINE_URL: "http://knowledge-engine:8000"
       ANALYZER_URL: "http://realtime-analyzer:8001"
       OPSEC_URL: "http://opsec-monitor:8002"
+      INTEGRATION_HUB_URL: "http://integration-hub:8500"
+      JAILBREAK_VIA_HUB: "true"
+      JAILBREAK_API_KEY: ${JAILBREAK_API_KEY}
+      POSTGRES_DSN: "postgresql://opsec:opsec@postgres:5432/attack_db"
+      SERVICE_API_KEY_ORCHESTRATOR: service-key-orchestrator-12345
+      ALLOW_HIGH_RISK: "true"
+      LIVE_REQUIRE_APPROVAL: "false"
+      LIVE_OPSEC_VETO_THRESHOLD: "999"
+      # Cloud Agent Configuration (optional - only needed for cloud agent functionality)
+      CURSOR_API_KEY: ${CURSOR_API_KEY}
+      REPO_URL: ${REPO_URL:-https://github.com/your-org/attack-dataset}
     depends_on:
-      - knowledge-engine
-      - realtime-analyzer
+      knowledge-engine:
+        condition: service_started
+      integration-hub:
+        condition: service_started
+      realtime-analyzer:
+        condition: service_started
+      opsec-monitor:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+  # ── Integration Hub ────────────────────────────────────────────────────────────
+  integration-hub:
+    build:
+      context: ./backend/integrations
+      dockerfile: Dockerfile
+    ports:
+      - "8500:8500"
+    environment:
+      - SERVICE_HOST=0.0.0.0
+      - SERVICE_PORT=8500
+      - ENVIRONMENT=development
+      - LOG_LEVEL=INFO
+      - INTEGRATION_CONFIG_DIR=integrations
+      - REDIS_URL=redis://redis:6379
+      - OPSEC_MONITOR_URL=http://opsec-monitor:8002
+      - OPSEC_ASSESSMENT_ENABLED=true
+      - ALLOW_HIGH_RISK=true
+      - LIVE_REQUIRE_APPROVAL=false
+      - JAILBREAK_API_KEY=${JAILBREAK_API_KEY}
+      - SERVICE_API_KEY_INTEGRATION_HUB=service-key-integration-hub-12345
+    volumes:
+      - ./backend/integrations/integrations:/app/integrations
+      - ./backend/shared:/app/shared  # Shared modules for imports
+      - /var/run/docker.sock:/var/run/docker.sock  # For Docker-in-Docker
+    depends_on:
+      - redis
       - opsec-monitor
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
 
   # ── Dashboard ─────────────────────────────────────────────────────────────────
   dashboard:
@@ -98,13 +166,17 @@ services:
       context: ./frontend/dashboard
       dockerfile: Dockerfile
       args:
-        REACT_APP_ORCHESTRATOR_URL: "http://localhost:3001"
-        REACT_APP_WS_URL: "ws://localhost:3001"
+        NEXT_PUBLIC_ORCHESTRATOR_URL: http://localhost:3001
+        NEXT_PUBLIC_ANALYZER_URL: http://localhost:8001
+        NEXT_PUBLIC_KNOWLEDGE_ENGINE_URL: http://localhost:8000
+        NEXT_PUBLIC_OPSEC_URL: http://localhost:8002
+        NEXT_PUBLIC_INTEGRATION_HUB_URL: http://localhost:8500
     ports:
-      - "3000:80"
+      - "3000:3000"
     depends_on:
       - orchestrator
 
 volumes:
   pg_data:
   qdrant_data:
+  redis_data:

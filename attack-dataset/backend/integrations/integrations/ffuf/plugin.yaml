@@ -1,0 +1,72 @@
+name: ffuf
+version: 1.0.0
+category: security_tools
+description: ffuf — fast web fuzzer for directories, parameters, and vhosts
+author: OpsecAI Team
+license: MIT
+
+execution:
+  local:
+    binary: ffuf
+    timeout: 180
+    sandbox: true
+    default_wordlist: /usr/share/wordlists/dirb/common.txt
+
+schemas:
+  input:
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - fuzz_url
+          - fuzz_vhost
+        default: fuzz_url
+      target:
+        type: string
+        description: Base URL or host for fuzzing
+      url:
+        type: string
+        description: Fuzz URL with FUZZ keyword (overrides target-derived URL)
+      wordlist:
+        type: string
+        description: Path to wordlist file
+      extensions:
+        type: string
+        description: Comma-separated extensions (e.g. php,html,txt)
+      vhost_domain:
+        type: string
+        description: Base domain for vhost fuzz (e.g. example.com)
+    required:
+      - operation
+
+  output:
+    type: object
+    properties:
+      success:
+        type: boolean
+      terminal_lines:
+        type: array
+      structured:
+        type: object
+
+opsec:
+  enabled: true
+  risk_level: medium
+  noise_level: high
+  detection_methods:
+    - WAF rate limiting
+    - 404 storm logging
+  evasion_recommendations:
+    - Smaller wordlists
+    - Lower thread count (-t 10)
+
+dependencies:
+  - name: ffuf
+    version: ">=2.0"
+    install_url: https://github.com/ffuf/ffuf
+
+health_check:
+  enabled: true
+  command: "ffuf -V"
+  expected_output: "ffuf"

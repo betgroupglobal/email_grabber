@@ -23,12 +23,6 @@ from .core.models import (
     AttackVectorRequest,
     AttackVectorResponse,
 )
-from .search.searcher import AttackSearcher
-from .search.attack_chainer import AttackChainer
-from .ml.ml_service import get_ml_service
-from .ml.threat_emulation import get_threat_emulation_service
-from .ai.jail_break_ai import ClaudeAnalyst
-from .utils.opsec_audit import OpSecAuditEngine
 from .utils.config import (
     API_HOST,
     API_PORT,
@@ -43,15 +37,27 @@ __all__ = [
     "SearchResponse",
     "AttackVectorRequest",
     "AttackVectorResponse",
-    "AttackSearcher",
-    "AttackChainer",
-    "get_ml_service",
-    "get_threat_emulation_service",
-    "ClaudeAnalyst",
-    "OpSecAuditEngine",
     "API_HOST",
     "API_PORT",
     "POSTGRES_DSN",
     "QDRANT_HOST",
     "QDRANT_PORT",
 ]
+
+
+def __getattr__(name: str):
+    """Lazy imports so `import knowledge_engine.core.models` does not require qdrant."""
+    _lazy = {
+        "AttackSearcher": (".search.searcher", "AttackSearcher"),
+        "AttackChainer": (".search.attack_chainer", "AttackChainer"),
+        "get_ml_service": (".ml.ml_service", "get_ml_service"),
+        "get_threat_emulation_service": (".ml.threat_emulation", "get_threat_emulation_service"),
+        "ClaudeAnalyst": (".ai.jail_break_ai", "ClaudeAnalyst"),
+        "OpSecAuditEngine": (".utils.opsec_audit", "OpSecAuditEngine"),
+    }
+    if name in _lazy:
+        module_path, attr = _lazy[name]
+        import importlib
+        mod = importlib.import_module(module_path, __name__)
+        return getattr(mod, attr)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

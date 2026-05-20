@@ -6,12 +6,18 @@ and returns a full OpSec assessment with prioritised findings.
 """
 from __future__ import annotations
 
+import sys
+import os
 import logging
 from typing import List, Dict, Any, Optional
+
+# Add parent directory to path to import shared modules
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from shared.fastapi_robustness import setup_robustness_middleware
 
 from rules import RULES, Finding
 
@@ -29,6 +35,14 @@ app.add_middleware(
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+# Setup robustness middleware
+setup_robustness_middleware(
+    app,
+    service_name="opsec-monitor",
+    timeout_seconds=30.0,
+    version="1.0.0",
 )
 
 # ── Models ────────────────────────────────────────────────────────────────────
@@ -168,10 +182,11 @@ def assess_chain(request: ChainOpsecRequest):
             seen.add(f.rule_id)
             unique_findings.append(f)
 
-    global_score = score(all_findings)
+    # Score deduplicated findings so multi-step chains are not capped at 100 by repeat rules
+    global_score = score(unique_findings)
 
     return ChainOpsecReport(
-        total_findings=len(all_findings),
+        total_findings=len(unique_findings),
         risk_score=global_score,
         per_step=per_step,
         global_findings=[OpsecFinding(**f.__dict__) for f in unique_findings],
