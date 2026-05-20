@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * OpsecAI Orchestrator — Robustness Middleware
+ * AutonomAI Orchestrator — Robustness Middleware
  *
  * Provides structured logging, request correlation, timeouts, metrics,
  * security headers, global error handling, and graceful shutdown.

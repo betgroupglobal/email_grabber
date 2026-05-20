@@ -32,7 +32,7 @@ async function testEndpoint(endpoint, method = 'GET', body = null) {
 }
 
 async function runTests() {
-  console.log('Testing OpsecAI Backend API...\n');
+  console.log('Testing AutonomAI Backend API...\n');
   console.log(`API Base URL: ${API_BASE_URL}\n`);
 
   const tests = [

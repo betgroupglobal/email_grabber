@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OpsecAI Dashboard",
-  description: "Attack Analysis and Red Team Operations",
+  title: "AutonomAI",
+  description: "Autonomous attack assessment and live operations",
 };
 
 export const viewport: Viewport = {

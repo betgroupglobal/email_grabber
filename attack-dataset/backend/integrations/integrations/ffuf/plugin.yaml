@@ -2,7 +2,7 @@ name: ffuf
 version: 1.0.0
 category: security_tools
 description: ffuf — fast web fuzzer for directories, parameters, and vhosts
-author: OpsecAI Team
+author: AutonomAI Team
 license: MIT
 
 execution:

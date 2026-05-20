@@ -2,7 +2,7 @@ name: mcp_burp
 version: 1.0.0
 category: security_tools
 description: Burp Suite via Model Context Protocol (PortSwigger MCP Server)
-author: OpsecAI Team
+author: AutonomAI Team
 license: MIT
 
 execution:

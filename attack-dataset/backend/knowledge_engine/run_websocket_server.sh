@@ -4,7 +4,7 @@
 
 cd "$(dirname "$0")"
 
-echo "Starting WebSocket server for OpsecAI dashboard..."
+echo "Starting WebSocket server for AutonomAI dashboard..."
 echo "WebSocket server will run on ws://localhost:3001"
 
 # Activate virtual environment if it exists

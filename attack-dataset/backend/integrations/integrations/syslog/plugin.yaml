@@ -2,7 +2,7 @@ name: syslog
 version: 1.0.0
 category: log_analysis
 description: Syslog log analysis and security event detection
-author: OpsecAI Team
+author: AutonomAI Team
 license: MIT
 
 execution:

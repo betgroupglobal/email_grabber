@@ -2,7 +2,7 @@ name: openvas
 version: 1.0.0
 category: vulnerability_scanner
 description: OpenVAS vulnerability scanner integration for security assessments
-author: OpsecAI Team
+author: AutonomAI Team
 license: MIT
 
 execution:
@@ -39,7 +39,7 @@ schemas:
       scan_name:
         type: string
         description: Custom name for the scan
-        default: "OpsecAI Scan"
+        default: "AutonomAI Scan"
 
   output:
     type: object

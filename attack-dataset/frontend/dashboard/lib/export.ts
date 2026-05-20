@@ -227,7 +227,7 @@ function downloadFile(content: string, filename: string, mimeType: string): void
 // Export dashboard state
 export function exportDashboardState(component: string, data: any): void {
   const exportData: ExportData = {
-    title: `OpsecAI Dashboard Export - ${component}`,
+    title: `AutonomAI Dashboard Export - ${component}`,
     description: `Dashboard state export for ${component} component`,
     data: Array.isArray(data) ? data : [data],
     metadata: {
@@ -238,7 +238,7 @@ export function exportDashboardState(component: string, data: any): void {
 
   exportToJSON(exportData, {
     format: 'json',
-    filename: `opsecai_${component}_${Date.now()}.json`,
+    filename: `autonomai_${component}_${Date.now()}.json`,
     prettyPrint: true
   });
 }
@@ -246,7 +246,7 @@ export function exportDashboardState(component: string, data: any): void {
 // Export attack chain data
 export function exportAttackChain(chainData: any): void {
   const exportData: ExportData = {
-    title: 'OpsecAI Attack Chain Export',
+    title: 'AutonomAI Attack Chain Export',
     description: 'Complete attack chain configuration and execution data',
     data: Array.isArray(chainData) ? chainData : [chainData],
     metadata: {
@@ -265,7 +265,7 @@ export function exportAttackChain(chainData: any): void {
 // Export feedback loop data
 export function exportFeedbackLoopData(feedbackData: any): void {
   const exportData: ExportData = {
-    title: 'OpsecAI Feedback Loop Analytics',
+    title: 'AutonomAI Feedback Loop Analytics',
     description: 'Feedback loop performance and adaptation metrics',
     data: Array.isArray(feedbackData) ? feedbackData : [feedbackData],
     metadata: {
@@ -283,7 +283,7 @@ export function exportFeedbackLoopData(feedbackData: any): void {
 // Export session data
 export function exportSessionData(sessionData: any): void {
   const exportData: ExportData = {
-    title: 'OpsecAI Session Data',
+    title: 'AutonomAI Session Data',
     description: 'Complete session information and execution history',
     data: Array.isArray(sessionData) ? sessionData : [sessionData],
     metadata: {
@@ -302,7 +302,7 @@ export function exportSessionData(sessionData: any): void {
 // Export agent performance data
 export function exportAgentPerformance(agentData: any): void {
   const exportData: ExportData = {
-    title: 'OpsecAI Agent Performance Report',
+    title: 'AutonomAI Agent Performance Report',
     description: 'Multi-agent orchestration performance metrics',
     data: Array.isArray(agentData) ? agentData : [agentData],
     metadata: {
@@ -325,7 +325,7 @@ export function generateComprehensiveReport(data: {
   agentPerformance?: any[];
 }): void {
   const exportData: ExportData = {
-    title: 'OpsecAI Comprehensive Report',
+    title: 'AutonomAI Comprehensive Report',
     description: 'Complete system performance and security assessment report',
     data: [
       ...(data.attackChains || []).map(item => ({ ...item, type: 'attack_chain' })),
@@ -341,7 +341,7 @@ export function generateComprehensiveReport(data: {
 
   exportToJSON(exportData, {
     format: 'json',
-    filename: `opsecai_comprehensive_report_${Date.now()}.json`,
+    filename: `autonomai_comprehensive_report_${Date.now()}.json`,
     prettyPrint: true
   });
 }

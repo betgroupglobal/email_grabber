@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# OpsecAI - Start All Services Script
-# This script starts all services for the OpsecAI platform
+# AutonomAI - Start All Services Script
+# This script starts all services for the AutonomAI platform
 
 set -e  # Exit on error
 
@@ -115,7 +115,7 @@ start_frontend() {
 
 # Function to start all services
 start_all() {
-    print_header "Starting All OpsecAI Services"
+    print_header "Starting All AutonomAI Services"
     
     check_docker
     check_docker_compose
@@ -172,7 +172,7 @@ show_usage() {
     cat << EOF
 Usage: $0 [OPTION]
 
-Start all services for the OpsecAI platform.
+Start all services for the AutonomAI platform.
 
 OPTIONS:
     all             Start all services (infrastructure + backend + frontend)

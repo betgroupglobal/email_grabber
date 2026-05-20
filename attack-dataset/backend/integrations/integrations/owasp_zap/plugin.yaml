@@ -2,7 +2,7 @@ name: owasp_zap
 version: 1.0.0
 category: web_security
 description: OWASP ZAP web application security scanner integration
-author: OpsecAI Team
+author: AutonomAI Team
 license: MIT
 
 execution:

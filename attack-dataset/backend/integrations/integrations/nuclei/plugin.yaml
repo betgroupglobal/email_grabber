@@ -2,7 +2,7 @@ name: nuclei
 version: 1.0.0
 category: security_tools
 description: ProjectDiscovery Nuclei — template-based vulnerability scanning
-author: OpsecAI Team
+author: AutonomAI Team
 license: MIT
 
 execution:

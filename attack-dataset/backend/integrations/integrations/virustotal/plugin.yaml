@@ -2,7 +2,7 @@ name: virustotal
 version: 1.0.0
 category: threat_intelligence
 description: VirusTotal API integration for threat intelligence and malware analysis
-author: OpsecAI Team
+author: AutonomAI Team
 license: MIT
 
 execution:

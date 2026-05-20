@@ -2,7 +2,7 @@ name: metasploit
 version: 1.0.0
 category: security_tools
 description: Metasploit Framework integration — module listing, auxiliary scans, gated exploits, msfvenom payloads
-author: OpsecAI Team
+author: AutonomAI Team
 license: MIT
 
 execution:

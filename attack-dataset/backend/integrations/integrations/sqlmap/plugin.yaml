@@ -2,7 +2,7 @@ name: sqlmap
 version: 1.0.0
 category: security_tools
 description: sqlmap — automated SQL injection detection (safe defaults, ROE-gated crawl)
-author: OpsecAI Team
+author: AutonomAI Team
 license: MIT
 
 execution:

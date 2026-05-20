@@ -1,11 +1,11 @@
-# OpsecAI Service Management Scripts
+# AutonomAI Service Management Scripts
 
-This directory contains scripts to manage all OpsecAI platform services easily.
+This directory contains scripts to manage all AutonomAI platform services easily.
 
 ## Available Scripts
 
 ### 🚀 `start-all.sh` - Start Services
-Start all or specific services for the OpsecAI platform.
+Start all or specific services for the AutonomAI platform.
 
 ```bash
 # Start all services (infrastructure + backend + frontend)

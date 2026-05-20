@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# OpsecAI - Service Status Script
-# This script checks the status and health of all OpsecAI platform services
+# AutonomAI - Service Status Script
+# This script checks the status and health of all AutonomAI platform services
 
 set -e  # Exit on error
 
@@ -213,7 +213,7 @@ show_usage() {
     cat << EOF
 Usage: $0 [OPTION]
 
-Check the status and health of OpsecAI platform services.
+Check the status and health of AutonomAI platform services.
 
 OPTIONS:
     quick           Show quick status summary (default)

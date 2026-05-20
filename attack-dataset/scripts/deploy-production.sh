@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ── Production Deployment Script ────────────────────────────────────────────────
-# This script handles the deployment of the OpsecAI platform in production
+# This script handles the deployment of the AutonomAI platform in production
 
 set -e
 

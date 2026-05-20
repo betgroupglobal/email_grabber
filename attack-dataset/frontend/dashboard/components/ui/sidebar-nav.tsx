@@ -82,8 +82,8 @@ export function SidebarNav() {
             </div>
             {!collapsed && (
               <div>
-                <h1 className="font-bold text-lg text-white">OpsecAI</h1>
-                <p className="text-xs text-slate-400">Attack Platform</p>
+                <h1 className="font-bold text-lg text-white">AutonomAI</h1>
+                <p className="text-xs text-slate-400">Autonomous Operations</p>
               </div>
             )}
           </div>

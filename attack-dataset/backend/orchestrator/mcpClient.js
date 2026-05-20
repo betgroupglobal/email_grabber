@@ -211,7 +211,7 @@ class McpStdioSession {
     this._request("initialize", {
       protocolVersion: "2024-11-05",
       capabilities: {},
-      clientInfo: { name: "opsecai-orchestrator", version: "1.0.0" },
+      clientInfo: { name: "autonomai-orchestrator", version: "1.0.0" },
     })
       .then(() => {
         this._notify("notifications/initialized", {});

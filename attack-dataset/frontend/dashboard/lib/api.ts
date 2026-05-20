@@ -1,5 +1,5 @@
 /**
- * API integration functions for the OpsecAI dashboard
+ * API integration functions for the AutonomAI dashboard
  * Connects to backend endpoints for attack tree, agents, and feedback loop functionality
  */
 

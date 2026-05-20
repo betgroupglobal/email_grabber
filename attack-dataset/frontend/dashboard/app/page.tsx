@@ -419,8 +419,8 @@ export default function Home() {
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Command center</h1>
-          <p className="text-sm text-slate-500">Service health, engagements, and quick access</p>
+          <h1 className="text-2xl font-bold text-white">AutonomAI</h1>
+          <p className="text-sm text-slate-500">Command center — service health and quick access</p>
         </div>
         <div className="flex items-center gap-3">
 <div className="hidden items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/60 px-3 py-1.5 md:flex">

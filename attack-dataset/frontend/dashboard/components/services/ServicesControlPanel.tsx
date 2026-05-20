@@ -294,7 +294,7 @@ export default function ServicesControlPanel() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-cyan-400">Services Control Panel</h2>
-          <p className="text-slate-400">Manage and monitor all OpsecAI services</p>
+          <p className="text-slate-400">Manage and monitor all AutonomAI services</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="text-sm text-slate-400">

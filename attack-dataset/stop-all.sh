@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# OpsecAI - Stop All Services Script
-# This script stops all services for the OpsecAI platform
+# AutonomAI - Stop All Services Script
+# This script stops all services for the AutonomAI platform
 
 set -e  # Exit on error
 
@@ -49,7 +49,7 @@ check_docker() {
 
 # Function to stop all services
 stop_all() {
-    print_header "Stopping All OpsecAI Services"
+    print_header "Stopping All AutonomAI Services"
     
     check_docker
     
@@ -114,7 +114,7 @@ show_usage() {
     cat << EOF
 Usage: $0 [OPTION]
 
-Stop all services for the OpsecAI platform.
+Stop all services for the AutonomAI platform.
 
 OPTIONS:
     all             Stop all services (default)

@@ -50,7 +50,7 @@ export default function ExportPanel({ data, component }: ExportPanelProps) {
       } else {
         // Generic export
         exportData({
-          title: 'OpsecAI Data Export',
+          title: 'AutonomAI Data Export',
           description: 'Generic data export from dashboard',
           data: Array.isArray(data) ? data : [data],
           metadata: {

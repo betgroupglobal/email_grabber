@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ── OpsecAI — local dev startup script ───────────────────────────────────────
+# ── AutonomAI — local dev startup script ───────────────────────────────────────
 # Starts all services in separate background processes.
 # Requirements: python3, pip, go, node/npm, docker (for postgres + qdrant)
 set -e

@@ -307,7 +307,7 @@ class AlertManager {
 
   private showBrowserNotification(alert: Alert): void {
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-      new Notification(`OpsecAI Alert: ${alert.title}`, {
+      new Notification(`AutonomAI Alert: ${alert.title}`, {
         body: alert.message,
         icon: '/favicon.ico'
       });

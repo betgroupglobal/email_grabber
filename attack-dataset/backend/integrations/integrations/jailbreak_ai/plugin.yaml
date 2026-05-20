@@ -2,7 +2,7 @@ name: jailbreak_ai
 version: 1.0.0
 category: ai_services
 description: Jailbreak AI chat completions API integration for uncensored LLM interactions
-author: OpsecAI Team
+author: AutonomAI Team
 license: MIT
 
 # Execution configuration
