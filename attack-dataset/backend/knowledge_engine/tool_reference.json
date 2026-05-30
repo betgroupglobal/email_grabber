@@ -1,0 +1,2985 @@
+{
+  "tactics": {
+    "Table of Contents": {
+      "subcategories": {},
+      "tools": []
+    },
+    "Reconnaissance": {
+      "subcategories": {
+        "Network Scanning": [
+          "Nmap",
+          "Masscan",
+          "Zmap",
+          "RustScan",
+          "UnicornScan",
+          "Angry IP Scanner",
+          "NetDiscover",
+          "ARPing"
+        ],
+        "DNS & Subdomain Enumeration": [
+          "Amass",
+          "Subfinder",
+          "Sublist3r",
+          "Subjack",
+          "Assetfinder",
+          "DNSenum",
+          "DNSrecon",
+          "DNSDumpster",
+          "theHarvester",
+          "Maltego",
+          "Recon-ng",
+          "Fierce",
+          "Shodan",
+          "Censys",
+          "ZoomEye",
+          "BinaryEdge",
+          "Fofa"
+        ],
+        "Web Reconnaissance": [
+          "Burp Suite",
+          "OWASP ZAP",
+          "Nikto",
+          "Dirb",
+          "Gobuster",
+          "Feroxbuster",
+          "Wfuzz",
+          "Ffuf",
+          "Wpscan",
+          "Joomscan",
+          "CMSmap"
+        ],
+        "Wireless Reconnaissance": [
+          "Aircrack-ng",
+          "Kismet",
+          "Wireshark",
+          "tcpdump",
+          "Bettercap",
+          "Ettercap",
+          "HackRF",
+          "RTL-SDR",
+          "GNURadio"
+        ]
+      },
+      "tools": [
+        {
+          "name": "Nmap",
+          "description": "Port scanner, OS detection, service versioning",
+          "opsec_considerations": "Default scans generate high network noise; customize timing (`-T2`), use decoys, randomize source ports if possible",
+          "detection_methods": "IDS/IPS signature detection, firewall logs, netflow anomalies",
+          "tactic": "Reconnaissance",
+          "subcategory": "Network Scanning"
+        },
+        {
+          "name": "Masscan",
+          "description": "High-speed port scanner (10M packets/sec)",
+          "opsec_considerations": "Extremely noisy; use only on authorized targets, consider rate limiting, use from distributed infrastructure",
+          "detection_methods": "Massive spike in connection attempts, SYN flood detection",
+          "tactic": "Reconnaissance",
+          "subcategory": "Network Scanning"
+        },
+        {
+          "name": "Zmap",
+          "description": "Internet-wide scanner",
+          "opsec_considerations": "Only for authorized research; use from cloud with proper attribution",
+          "detection_methods": "ISP abuse reports, global scan detection",
+          "tactic": "Reconnaissance",
+          "subcategory": "Network Scanning"
+        },
+        {
+          "name": "RustScan",
+          "description": "Modern port scanner (Rust-based)",
+          "opsec_considerations": "Similar to Nmap but faster; same OpSec considerations",
+          "detection_methods": "Same as Nmap",
+          "tactic": "Reconnaissance",
+          "subcategory": "Network Scanning"
+        },
+        {
+          "name": "UnicornScan",
+          "description": "Port scanner with advanced features",
+          "opsec_considerations": "Customizable; avoid default aggressive timing",
+          "detection_methods": "Connection pattern analysis",
+          "tactic": "Reconnaissance",
+          "subcategory": "Network Scanning"
+        },
+        {
+          "name": "Angry IP Scanner",
+          "description": "GUI network scanner",
+          "opsec_considerations": "Generates ARP noise; use in isolated networks",
+          "detection_methods": "ARP table flooding detection",
+          "tactic": "Reconnaissance",
+          "subcategory": "Network Scanning"
+        },
+        {
+          "name": "NetDiscover",
+          "description": "Active/passive network discovery via ARP",
+          "opsec_considerations": "Passive mode is stealthier; active ARP scanning triggers host-based detection",
+          "detection_methods": "ARP cache poisoning alerts",
+          "tactic": "Reconnaissance",
+          "subcategory": "Network Scanning"
+        },
+        {
+          "name": "ARPing",
+          "description": "ARP discovery tool",
+          "opsec_considerations": "Can be detected by ARP monitoring; use sparingly",
+          "detection_methods": "ARP storm detection",
+          "tactic": "Reconnaissance",
+          "subcategory": "Network Scanning"
+        },
+        {
+          "name": "Amass",
+          "description": "Subdomain enumeration (OWASP)",
+          "opsec_considerations": "Use DNSSEC validation; rate limit queries; consider passive mode",
+          "detection_methods": "High DNS query volume, unusual DNS patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Subfinder",
+          "description": "Subdomain discovery (Go)",
+          "opsec_considerations": "Similar to Amass; use passive sources first",
+          "detection_methods": "DNS query volume",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Sublist3r",
+          "description": "Subdomain enumeration via search engines",
+          "opsec_considerations": "Passive-only (searches) \u2014 lower detection risk",
+          "detection_methods": "Search engine API rate limits",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Subjack",
+          "description": "Subdomain takeover scanner",
+          "opsec_considerations": "Only scans discovered subdomains; limited noise",
+          "detection_methods": "DNS query patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Assetfinder",
+          "description": "Asset discovery tool",
+          "opsec_considerations": "Rate limit queries; use passive sources",
+          "detection_methods": "DNS query volume",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "DNSenum",
+          "description": "DNS enumeration script",
+          "opsec_considerations": "Older tool; consider Amass instead",
+          "detection_methods": "DNS query patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "DNSrecon",
+          "description": "DNS reconnaissance suite",
+          "opsec_considerations": "Use with care; limit query rate",
+          "detection_methods": "DNS query volume",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "DNSDumpster",
+          "description": "DNS record lookup service",
+          "opsec_considerations": "Passive service; query rate limits",
+          "detection_methods": "Service API limits",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "theHarvester",
+          "description": "OSINT via search engines",
+          "opsec_considerations": "Use passive sources only; rotate user agents",
+          "detection_methods": "Search engine API limits",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Maltego",
+          "description": "Visual OSINT and link analysis",
+          "opsec_considerations": "Passive mode recommended; avoid active scanning",
+          "detection_methods": "Unusual data access patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Recon-ng",
+          "description": "Modular reconnaissance framework",
+          "opsec_considerations": "Use passive modules first; rate limit active modules",
+          "detection_methods": "API rate limits, DNS patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Fierce",
+          "description": "DNS enumeration tool",
+          "opsec_considerations": "Older; consider Amass/Subfinder",
+          "detection_methods": "DNS query patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Shodan",
+          "description": "Internet-connected device search",
+          "opsec_considerations": "Use API with rate limits; consider official account",
+          "detection_methods": "API usage patterns, scan detection",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Censys",
+          "description": "Internet search engine",
+          "opsec_considerations": "Same as Shodan; use official API",
+          "detection_methods": "API usage patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "ZoomEye",
+          "description": "Chinese IoT search engine",
+          "opsec_considerations": "Use API; rotate IPs if scanning",
+          "detection_methods": "API rate limits",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "BinaryEdge",
+          "description": "Internet scan search engine",
+          "opsec_considerations": "API-based; rate limit queries",
+          "detection_methods": "API usage patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Fofa",
+          "description": "Chinese search engine",
+          "opsec_considerations": "Use API; rotate IPs",
+          "detection_methods": "API rate limits",
+          "tactic": "Reconnaissance",
+          "subcategory": "DNS & Subdomain Enumeration"
+        },
+        {
+          "name": "Burp Suite",
+          "description": "Web app security testing",
+          "opsec_considerations": "**High detection risk** \u2014 customize User-Agent, match target traffic patterns, use Burp Community with custom headers",
+          "detection_methods": "WAF signature detection, unusual UA strings",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "OWASP ZAP",
+          "description": "Web app security scanner",
+          "opsec_considerations": "Similar to Burp; customize UA and timing",
+          "detection_methods": "WAF detection, scan patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "Nikto",
+          "description": "Web server scanner",
+          "opsec_considerations": "Very noisy; high request volume; modify delay between requests",
+          "detection_methods": "High request rate, distinct UA",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "Dirb",
+          "description": "Directory brute-forcing",
+          "opsec_considerations": "Use custom wordlists, add random delays, rotate user agents",
+          "detection_methods": "Brute-force detection",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "Gobuster",
+          "description": "Directory brute-forcing (Go)",
+          "opsec_considerations": "Faster than Dirb; same OpSec concerns",
+          "detection_methods": "Brute-force detection",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "Feroxbuster",
+          "description": "Directory brute-forcing (Rust)",
+          "opsec_considerations": "Fast; use with timing and custom wordlists",
+          "detection_methods": "Brute-force detection",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "Wfuzz",
+          "description": "Web fuzzer",
+          "opsec_considerations": "Use with rate limiting and custom payloads",
+          "detection_methods": "Fuzzing patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "Ffuf",
+          "description": "Fast web fuzzer",
+          "opsec_considerations": "Similar to Wfuzz; rate limit requests",
+          "detection_methods": "Fuzzing patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "Wpscan",
+          "description": "WordPress scanner",
+          "opsec_considerations": "Only if WordPress detected; use with discretion",
+          "detection_methods": "WordPress-specific patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "Joomscan",
+          "description": "Joomla scanner",
+          "opsec_considerations": "Only if Joomla detected",
+          "detection_methods": "Joomla-specific patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "CMSmap",
+          "description": "CMS scanner",
+          "opsec_considerations": "Only if CMS detected",
+          "detection_methods": "CMS-specific patterns",
+          "tactic": "Reconnaissance",
+          "subcategory": "Web Reconnaissance"
+        },
+        {
+          "name": "Aircrack-ng",
+          "description": "WEP/WPA cracking suite",
+          "opsec_considerations": "Monitor mode is passive; deauth attacks are loud",
+          "detection_methods": "WIDS detection, deauth floods",
+          "tactic": "Reconnaissance",
+          "subcategory": "Wireless Reconnaissance"
+        },
+        {
+          "name": "Kismet",
+          "description": "Wireless sniffer/intrusion detection",
+          "opsec_considerations": "Passive monitoring is stealthy",
+          "detection_methods": "Wireless IDS",
+          "tactic": "Reconnaissance",
+          "subcategory": "Wireless Reconnaissance"
+        },
+        {
+          "name": "Wireshark",
+          "description": "Packet analyzer",
+          "opsec_considerations": "Passive capture is safer; avoid injection",
+          "detection_methods": "Network tap detection",
+          "tactic": "Reconnaissance",
+          "subcategory": "Wireless Reconnaissance"
+        },
+        {
+          "name": "tcpdump",
+          "description": "Packet capture",
+          "opsec_considerations": "Same as Wireshark",
+          "detection_methods": "Network tap detection",
+          "tactic": "Reconnaissance",
+          "subcategory": "Wireless Reconnaissance"
+        },
+        {
+          "name": "Bettercap",
+          "description": "Network attack tool",
+          "opsec_considerations": "**High detection risk** \u2014 use sparingly; MITM is very detectable",
+          "detection_methods": "ARP spoofing detection, MITM alerts",
+          "tactic": "Reconnaissance",
+          "subcategory": "Wireless Reconnaissance"
+        },
+        {
+          "name": "Ettercap",
+          "description": "MITM/sniffing",
+          "opsec_considerations": "**Very detectable** \u2014 ARP poisoning triggers WIDS",
+          "detection_methods": "ARP poisoning, MITM alerts",
+          "tactic": "Reconnaissance",
+          "subcategory": "Wireless Reconnaissance"
+        },
+        {
+          "name": "HackRF",
+          "description": "SDR (Software Defined Radio)",
+          "opsec_considerations": "Passive RX is stealthy; TX is detectable",
+          "detection_methods": "RF monitoring, spectrum analysis",
+          "tactic": "Reconnaissance",
+          "subcategory": "Wireless Reconnaissance"
+        },
+        {
+          "name": "RTL-SDR",
+          "description": "Cheap SDR dongle",
+          "opsec_considerations": "Passive RX only for recon",
+          "detection_methods": "RF spectrum anomalies",
+          "tactic": "Reconnaissance",
+          "subcategory": "Wireless Reconnaissance"
+        },
+        {
+          "name": "GNURadio",
+          "description": "SDR framework",
+          "opsec_considerations": "Use passive RX for recon",
+          "detection_methods": "RF spectrum anomalies",
+          "tactic": "Reconnaissance",
+          "subcategory": "Wireless Reconnaissance"
+        }
+      ]
+    },
+    "Resource Development": {
+      "subcategories": {
+        "Infrastructure Setup": [
+          "Docker",
+          "Kubernetes",
+          "AWS CLI",
+          "Azure CLI",
+          "GCP CLI",
+          "Terraform",
+          "Ansible",
+          "GitHub Actions"
+        ],
+        "Domain & Infrastructure": [
+          "GitHub",
+          "Git",
+          "Ngrok",
+          "Chisel",
+          "DNSCat",
+          "Iodine"
+        ]
+      },
+      "tools": [
+        {
+          "name": "Docker",
+          "description": "Container platform",
+          "opsec_considerations": "Use private registry; avoid default image names",
+          "detection_methods": "Container registry access logs",
+          "tactic": "Resource Development",
+          "subcategory": "Infrastructure Setup"
+        },
+        {
+          "name": "Kubernetes",
+          "description": "Container orchestration",
+          "opsec_considerations": "Use private clusters; avoid public cloud if possible",
+          "detection_methods": "Cloud provider API access",
+          "tactic": "Resource Development",
+          "subcategory": "Infrastructure Setup"
+        },
+        {
+          "name": "AWS CLI",
+          "description": "AWS command-line tools",
+          "opsec_considerations": "Use IAM roles with least privilege; rotate credentials",
+          "detection_methods": "CloudTrail logs",
+          "tactic": "Resource Development",
+          "subcategory": "Infrastructure Setup"
+        },
+        {
+          "name": "Azure CLI",
+          "description": "Azure command-line tools",
+          "opsec_considerations": "Same as AWS CLI",
+          "detection_methods": "Azure Monitor logs",
+          "tactic": "Resource Development",
+          "subcategory": "Infrastructure Setup"
+        },
+        {
+          "name": "GCP CLI",
+          "description": "Google Cloud CLI",
+          "opsec_considerations": "Same as AWS CLI",
+          "detection_methods": "Cloud Audit Logs",
+          "tactic": "Resource Development",
+          "subcategory": "Infrastructure Setup"
+        },
+        {
+          "name": "Terraform",
+          "description": "Infrastructure as Code",
+          "opsec_considerations": "Use private state backend; avoid committing secrets",
+          "detection_methods": "Cloud provider API access",
+          "tactic": "Resource Development",
+          "subcategory": "Infrastructure Setup"
+        },
+        {
+          "name": "Ansible",
+          "description": "Automation tool",
+          "opsec_considerations": "Use vault for secrets; avoid hardcoded credentials",
+          "detection_methods": "Configuration management logs",
+          "tactic": "Resource Development",
+          "subcategory": "Infrastructure Setup"
+        },
+        {
+          "name": "GitHub Actions",
+          "description": "CI/CD automation",
+          "opsec_considerations": "Use self-hosted runners for sensitive operations",
+          "detection_methods": "CI/CD pipeline logs",
+          "tactic": "Resource Development",
+          "subcategory": "Infrastructure Setup"
+        },
+        {
+          "name": "GitHub",
+          "description": "Code hosting",
+          "opsec_considerations": "Use private repos; avoid committing secrets",
+          "detection_methods": "Repository access logs",
+          "tactic": "Resource Development",
+          "subcategory": "Domain & Infrastructure"
+        },
+        {
+          "name": "Git",
+          "description": "Version control",
+          "opsec_considerations": "Use private repos; avoid committing secrets",
+          "detection_methods": "Repository access logs",
+          "tactic": "Resource Development",
+          "subcategory": "Domain & Infrastructure"
+        },
+        {
+          "name": "Ngrok",
+          "description": "Tunneling service",
+          "opsec_considerations": "**High attribution risk** \u2014 public tunnels create audit trails; use custom domains or private infrastructure",
+          "detection_methods": "Tunnel detection, domain reputation",
+          "tactic": "Resource Development",
+          "subcategory": "Domain & Infrastructure"
+        },
+        {
+          "name": "Chisel",
+          "description": "Tunneling tool",
+          "opsec_considerations": "Better than public ngrok; still detectable",
+          "detection_methods": "Tunnel detection",
+          "tactic": "Resource Development",
+          "subcategory": "Domain & Infrastructure"
+        },
+        {
+          "name": "DNSCat",
+          "description": "DNS tunneling",
+          "opsec_considerations": "Obfuscate queries; use legitimate domains",
+          "detection_methods": "DNS query entropy analysis",
+          "tactic": "Resource Development",
+          "subcategory": "Domain & Infrastructure"
+        },
+        {
+          "name": "Iodine",
+          "description": "DNS tunneling",
+          "opsec_considerations": "Same as DNSCat",
+          "detection_methods": "DNS entropy analysis",
+          "tactic": "Resource Development",
+          "subcategory": "Domain & Infrastructure"
+        }
+      ]
+    },
+    "Initial Access": {
+      "subcategories": {
+        "Exploitation Frameworks": [
+          "Metasploit",
+          "MSFConsole",
+          "MSFVenom",
+          "Empire",
+          "PoshC2",
+          "Koadic",
+          "Sliver",
+          "Havoc",
+          "Covenant",
+          "Mythic",
+          "Rattler",
+          "Searchsploit",
+          "ExploitDB"
+        ],
+        "Phishing & Social Engineering": [
+          "SET (Social-Engineer Toolkit)",
+          "Gophish",
+          "King Phisher",
+          "GoPhish"
+        ],
+        "Web Exploits": [
+          "SQLMap",
+          "Havij",
+          "JSQL",
+          "Absinthe",
+          "NoSQLMap",
+          "BBQSQL",
+          "Dirb"
+        ],
+        "Password Attacks": [
+          "Hydra",
+          "Medusa",
+          "Ncrack",
+          "Patator",
+          "THC-Hydra",
+          "Crowbar"
+        ]
+      },
+      "tools": [
+        {
+          "name": "Metasploit",
+          "description": "Exploitation framework",
+          "opsec_considerations": "**Highly signatured** \u2014 use custom payloads, encode shellcode, modify default templates",
+          "detection_methods": "AV/EDR signature detection, C2 beacons",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "MSFConsole",
+          "description": "Metasploit CLI",
+          "opsec_considerations": "Same as Metasploit",
+          "detection_methods": "Same as Metasploit",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "MSFVenom",
+          "description": "Payload generator",
+          "opsec_considerations": "Generate custom templates; use encoding and packing",
+          "detection_methods": "AV signature detection",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "Empire",
+          "description": "PowerShell post-exploitation",
+          "opsec_considerations": "**Heavily flagged** \u2014 use custom stagers, modify C2 profiles",
+          "detection_methods": "PowerShell execution logs, C2 beacons",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "PoshC2",
+          "description": "PowerShell C2",
+          "opsec_considerations": "Similar to Empire; customize profiles",
+          "detection_methods": "PowerShell logs, C2 beacons",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "Koadic",
+          "description": "C2 framework",
+          "opsec_considerations": "Similar to Empire; customize profiles",
+          "detection_methods": "C2 beacons",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "Sliver",
+          "description": "C2 framework (Go)",
+          "opsec_considerations": "Better OpSec than PowerShell frameworks; still detectable",
+          "detection_methods": "C2 beacons, process behavior",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "Havoc",
+          "description": "C2 framework (C#)",
+          "opsec_considerations": "Similar to Sliver",
+          "detection_methods": "C2 beacons",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "Covenant",
+          "description": ".NET C2 framework",
+          "opsec_considerations": "**Signatured** \u2014 use custom builds",
+          "detection_methods": "C2 beacons, .NET behavior",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "Mythic",
+          "description": "C2 framework",
+          "opsec_considerations": "Multi-agent; use with caution",
+          "detection_methods": "C2 beacons",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "Rattler",
+          "description": "C2 framework",
+          "opsec_considerations": "Older; similar concerns",
+          "detection_methods": "C2 beacons",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "Searchsploit",
+          "description": "Exploit search",
+          "opsec_considerations": "Use locally; avoid public queries",
+          "detection_methods": "API usage patterns",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "ExploitDB",
+          "description": "Exploit database",
+          "opsec_considerations": "Use offline copy if possible",
+          "detection_methods": "API usage patterns",
+          "tactic": "Initial Access",
+          "subcategory": "Exploitation Frameworks"
+        },
+        {
+          "name": "SET (Social-Engineer Toolkit)",
+          "description": "Phishing framework",
+          "opsec_considerations": "Use custom templates; avoid default domains",
+          "detection_methods": "Email filtering, domain reputation",
+          "tactic": "Initial Access",
+          "subcategory": "Phishing & Social Engineering"
+        },
+        {
+          "name": "Gophish",
+          "description": "Phishing server",
+          "opsec_considerations": "Use custom domains; rotate infrastructure",
+          "detection_methods": "Domain reputation, email filtering",
+          "tactic": "Initial Access",
+          "subcategory": "Phishing & Social Engineering"
+        },
+        {
+          "name": "King Phisher",
+          "description": "Phishing automation",
+          "opsec_considerations": "Same as Gophish",
+          "detection_methods": "Domain reputation",
+          "tactic": "Initial Access",
+          "subcategory": "Phishing & Social Engineering"
+        },
+        {
+          "name": "GoPhish",
+          "description": "Phishing framework",
+          "opsec_considerations": "Same as Gophish",
+          "detection_methods": "Domain reputation",
+          "tactic": "Initial Access",
+          "subcategory": "Phishing & Social Engineering"
+        },
+        {
+          "name": "SQLMap",
+          "description": "SQL injection tool",
+          "opsec_considerations": "**Highly signatured** \u2014 modify User-Agent, add random delays, use tamper scripts",
+          "detection_methods": "WAF signature detection, SQL injection patterns",
+          "tactic": "Initial Access",
+          "subcategory": "Web Exploits"
+        },
+        {
+          "name": "Havij",
+          "description": "SQL injection tool",
+          "opsec_considerations": "**Commercially signatured** \u2014 use alternative or custom scripts",
+          "detection_methods": "WAF signature detection",
+          "tactic": "Initial Access",
+          "subcategory": "Web Exploits"
+        },
+        {
+          "name": "JSQL",
+          "description": "SQL injection tool",
+          "opsec_considerations": "Similar to SQLMap",
+          "detection_methods": "SQL injection patterns",
+          "tactic": "Initial Access",
+          "subcategory": "Web Exploits"
+        },
+        {
+          "name": "Absinthe",
+          "description": "SQL injection tool",
+          "opsec_considerations": "Older; similar concerns",
+          "detection_methods": "SQL injection patterns",
+          "tactic": "Initial Access",
+          "subcategory": "Web Exploits"
+        },
+        {
+          "name": "NoSQLMap",
+          "description": "NoSQL injection tool",
+          "opsec_considerations": "Similar to SQLMap",
+          "detection_methods": "NoSQL query patterns",
+          "tactic": "Initial Access",
+          "subcategory": "Web Exploits"
+        },
+        {
+          "name": "BBQSQL",
+          "description": "Blind SQL injection tool",
+          "opsec_considerations": "Similar to SQLMap",
+          "detection_methods": "Blind SQL patterns",
+          "tactic": "Initial Access",
+          "subcategory": "Web Exploits"
+        },
+        {
+          "name": "Dirb",
+          "description": "Directory brute-forcing",
+          "opsec_considerations": "See Web Recon section",
+          "detection_methods": "Brute-force detection",
+          "tactic": "Initial Access",
+          "subcategory": "Web Exploits"
+        },
+        {
+          "name": "Hydra",
+          "description": "Password brute-forcer",
+          "opsec_considerations": "**High detection risk** \u2014 use with rate limiting, random delays, rotate source IPs",
+          "detection_methods": "Brute-force detection, authentication logs",
+          "tactic": "Initial Access",
+          "subcategory": "Password Attacks"
+        },
+        {
+          "name": "Medusa",
+          "description": "Password brute-forcer",
+          "opsec_considerations": "Similar to Hydra",
+          "detection_methods": "Brute-force detection",
+          "tactic": "Initial Access",
+          "subcategory": "Password Attacks"
+        },
+        {
+          "name": "Ncrack",
+          "description": "Password brute-forcer",
+          "opsec_considerations": "Similar to Hydra",
+          "detection_methods": "Brute-force detection",
+          "tactic": "Initial Access",
+          "subcategory": "Password Attacks"
+        },
+        {
+          "name": "Patator",
+          "description": "Password brute-forcer",
+          "opsec_considerations": "Similar to Hydra",
+          "detection_methods": "Brute-force detection",
+          "tactic": "Initial Access",
+          "subcategory": "Password Attacks"
+        },
+        {
+          "name": "THC-Hydra",
+          "description": "Password brute-forcer",
+          "opsec_considerations": "Same as Hydra",
+          "detection_methods": "Brute-force detection",
+          "tactic": "Initial Access",
+          "subcategory": "Password Attacks"
+        },
+        {
+          "name": "Crowbar",
+          "description": "Password brute-forcer",
+          "opsec_considerations": "Similar to Hydra",
+          "detection_methods": "Brute-force detection",
+          "tactic": "Initial Access",
+          "subcategory": "Password Attacks"
+        }
+      ]
+    },
+    "Execution": {
+      "subcategories": {
+        "Command & Control": [
+          "Netcat",
+          "Socat",
+          "Telnet",
+          "OpenSSL",
+          "Stunnel",
+          "PowerShell",
+          "Bash",
+          "CMD",
+          "Python",
+          "Perl",
+          "Ruby",
+          "PHP"
+        ],
+        "Process Injection": [
+          "Frida",
+          "DLL Injection",
+          "Process Hollowing",
+          "Reflective DLL Injection"
+        ],
+        "File Execution": [
+          "Rundll32",
+          "Regsvr32",
+          "MSHTA",
+          "Certutil",
+          "Bitsadmin",
+          "WMIC"
+        ]
+      },
+      "tools": [
+        {
+          "name": "Netcat",
+          "description": "Network utility (reverse shell)",
+          "opsec_considerations": "**Commonly flagged** \u2014 encode traffic, use legitimate protocols",
+          "detection_methods": "Unusual network connections, shell-like behavior",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "Socat",
+          "description": "Network utility (multipurpose)",
+          "opsec_considerations": "Similar to Netcat",
+          "detection_methods": "Network anomalies",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "Telnet",
+          "description": "Remote shell",
+          "opsec_considerations": "**Plaintext** \u2014 avoid if possible; use SSH with key auth",
+          "detection_methods": "Plaintext credentials in transit",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "OpenSSL",
+          "description": "SSL/TLS toolkit",
+          "opsec_considerations": "Use for encrypted C2; generate valid certificates",
+          "detection_methods": "Certificate validation",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "Stunnel",
+          "description": "SSL tunneling",
+          "opsec_considerations": "Good for encrypting C2 traffic",
+          "detection_methods": "Certificate validation",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "PowerShell",
+          "description": "Windows automation",
+          "opsec_considerations": "**Heavily monitored** \u2014 use encoded commands, AMSI bypass, LOLBins",
+          "detection_methods": "PowerShell logs, AMSI alerts",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "Bash",
+          "description": "Unix shell",
+          "opsec_considerations": "Use with encoded commands; avoid direct execution",
+          "detection_methods": "Shell command logs",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "CMD",
+          "description": "Windows command prompt",
+          "opsec_considerations": "Similar to PowerShell concerns",
+          "detection_methods": "Command execution logs",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "Python",
+          "description": "Scripting language",
+          "opsec_considerations": "Use with encoded/obfuscated scripts",
+          "detection_methods": "Python process execution",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "Perl",
+          "description": "Scripting language",
+          "opsec_considerations": "Similar to Python",
+          "detection_methods": "Process execution",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "Ruby",
+          "description": "Scripting language",
+          "opsec_considerations": "Similar to Python",
+          "detection_methods": "Process execution",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "PHP",
+          "description": "Scripting language",
+          "opsec_considerations": "Similar to Python",
+          "detection_methods": "Process execution",
+          "tactic": "Execution",
+          "subcategory": "Command & Control"
+        },
+        {
+          "name": "Frida",
+          "description": "Dynamic instrumentation",
+          "opsec_considerations": "Use for research only; avoid in production if possible",
+          "detection_methods": "Process injection detection",
+          "tactic": "Execution",
+          "subcategory": "Process Injection"
+        },
+        {
+          "name": "DLL Injection",
+          "description": "DLL loading technique",
+          "opsec_considerations": "Use signed binaries or LOLBins",
+          "detection_methods": "EDR telemetry",
+          "tactic": "Execution",
+          "subcategory": "Process Injection"
+        },
+        {
+          "name": "Process Hollowing",
+          "description": "Process hollowing",
+          "opsec_considerations": "Detectable by EDR",
+          "detection_methods": "EDR telemetry",
+          "tactic": "Execution",
+          "subcategory": "Process Injection"
+        },
+        {
+          "name": "Reflective DLL Injection",
+          "description": "In-memory DLL loading",
+          "opsec_considerations": "**Bypasses disk-based detection** but detectable via memory scanning",
+          "detection_methods": "Memory scanning, behavior analysis",
+          "tactic": "Execution",
+          "subcategory": "Process Injection"
+        },
+        {
+          "name": "Rundll32",
+          "description": "DLL execution",
+          "opsec_considerations": "LOLBin; use for executing DLLs",
+          "detection_methods": "DLL execution logs",
+          "tactic": "Execution",
+          "subcategory": "File Execution"
+        },
+        {
+          "name": "Regsvr32",
+          "description": "DLL registration",
+          "opsec_considerations": "LOLBin; similar to Rundll32",
+          "detection_methods": "DLL execution logs",
+          "tactic": "Execution",
+          "subcategory": "File Execution"
+        },
+        {
+          "name": "MSHTA",
+          "description": "HTML Application",
+          "opsec_considerations": "LOLBin; used for script execution",
+          "detection_methods": "Script execution logs",
+          "tactic": "Execution",
+          "subcategory": "File Execution"
+        },
+        {
+          "name": "Certutil",
+          "description": "Certificate utility",
+          "opsec_considerations": "LOLBin; used for file download/execution",
+          "detection_methods": "File download logs",
+          "tactic": "Execution",
+          "subcategory": "File Execution"
+        },
+        {
+          "name": "Bitsadmin",
+          "description": "BITS client",
+          "opsec_considerations": "LOLBin; used for file download",
+          "detection_methods": "File download logs",
+          "tactic": "Execution",
+          "subcategory": "File Execution"
+        },
+        {
+          "name": "WMIC",
+          "description": "WMI command-line",
+          "opsec_considerations": "LOLBin; used for execution",
+          "detection_methods": "WMI event logs",
+          "tactic": "Execution",
+          "subcategory": "File Execution"
+        }
+      ]
+    },
+    "Persistence": {
+      "subcategories": {
+        "Windows Persistence": [
+          "Registry Run Keys",
+          "Scheduled Tasks",
+          "Services",
+          "WMI Event Subscription",
+          "COM Hijacking",
+          "DLL Side-loading",
+          "Startup Folder",
+          "Cron Jobs",
+          "Systemd Timers",
+          "rc.local",
+          "Bash Profile"
+        ],
+        "C2 Persistence": [
+          "Cobalt Strike",
+          "Empire",
+          "PoshC2",
+          "Sliver",
+          "Havoc",
+          "Covenant",
+          "Mythic"
+        ]
+      },
+      "tools": [
+        {
+          "name": "Registry Run Keys",
+          "description": "Startup persistence",
+          "opsec_considerations": "**High visibility** \u2014 EDR monitors Run keys; use COM hijacking instead",
+          "detection_methods": "Registry monitoring",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "Scheduled Tasks",
+          "description": "Scheduled execution",
+          "opsec_considerations": "**Easily enumerated** \u2014 use WMI event subscriptions instead",
+          "detection_methods": "Task enumeration",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "Services",
+          "description": "Service persistence",
+          "opsec_considerations": "**Monitored** \u2014 use service DLL hijacking",
+          "detection_methods": "Service enumeration",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "WMI Event Subscription",
+          "description": "Persistence mechanism",
+          "opsec_considerations": "**Better OpSec** than scheduled tasks; still detectable",
+          "detection_methods": "WMI event logs",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "COM Hijacking",
+          "description": "DLL hijacking",
+          "opsec_considerations": "**Better OpSec** than Run keys",
+          "detection_methods": "DLL loading logs",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "DLL Side-loading",
+          "description": "DLL hijacking",
+          "opsec_considerations": "Similar to COM hijacking",
+          "detection_methods": "DLL loading logs",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "Startup Folder",
+          "description": "Startup persistence",
+          "opsec_considerations": "**Trivially detected** \u2014 avoid",
+          "detection_methods": "File system monitoring",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "Cron Jobs",
+          "description": "Scheduled execution (Linux)",
+          "opsec_considerations": "**Logged and monitored** \u2014 use systemd timers instead",
+          "detection_methods": "Cron log monitoring",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "Systemd Timers",
+          "description": "Scheduled execution (Linux)",
+          "opsec_considerations": "**Better OpSec** than cron",
+          "detection_methods": "Systemd journal logs",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "rc.local",
+          "description": "Boot script (Linux)",
+          "opsec_considerations": "**Monitored** \u2014 use systemd instead",
+          "detection_methods": "File integrity monitoring",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "Bash Profile",
+          "description": "Shell profile persistence",
+          "opsec_considerations": "**Monitored** \u2014 avoid if possible",
+          "detection_methods": "File integrity monitoring",
+          "tactic": "Persistence",
+          "subcategory": "Windows Persistence"
+        },
+        {
+          "name": "Cobalt Strike",
+          "description": "C2 framework",
+          "opsec_considerations": "**Signatured** \u2014 use custom Malleable C2 profiles",
+          "detection_methods": "C2 beacon signatures",
+          "tactic": "Persistence",
+          "subcategory": "C2 Persistence"
+        },
+        {
+          "name": "Empire",
+          "description": "PowerShell C2",
+          "opsec_considerations": "**Heavily flagged** \u2014 use custom stagers",
+          "detection_methods": "PowerShell logs, C2 beacons",
+          "tactic": "Persistence",
+          "subcategory": "C2 Persistence"
+        },
+        {
+          "name": "PoshC2",
+          "description": "PowerShell C2",
+          "opsec_considerations": "Similar to Empire",
+          "detection_methods": "Same as Empire",
+          "tactic": "Persistence",
+          "subcategory": "C2 Persistence"
+        },
+        {
+          "name": "Sliver",
+          "description": "C2 framework (Go)",
+          "opsec_considerations": "**Better OpSec** than PowerShell frameworks",
+          "detection_methods": "C2 beacons",
+          "tactic": "Persistence",
+          "subcategory": "C2 Persistence"
+        },
+        {
+          "name": "Havoc",
+          "description": "C2 framework (C#)",
+          "opsec_considerations": "Similar to Sliver",
+          "detection_methods": "C2 beacons",
+          "tactic": "Persistence",
+          "subcategory": "C2 Persistence"
+        },
+        {
+          "name": "Covenant",
+          "description": ".NET C2 framework",
+          "opsec_considerations": "**Signatured** \u2014 use custom builds",
+          "detection_methods": "C2 beacons, .NET behavior",
+          "tactic": "Persistence",
+          "subcategory": "C2 Persistence"
+        },
+        {
+          "name": "Mythic",
+          "description": "C2 framework",
+          "opsec_considerations": "Multi-agent; customize profiles",
+          "detection_methods": "C2 beacons",
+          "tactic": "Persistence",
+          "subcategory": "C2 Persistence"
+        }
+      ]
+    },
+    "Privilege Escalation": {
+      "subcategories": {
+        "Windows Privilege Escalation": [
+          "Mimikatz",
+          "Rubeus",
+          "Kekeo",
+          "TgtDeleg",
+          "Kerberoast",
+          "AskTSP",
+          "AutoElevate",
+          "SweetPotato",
+          "JuicyPotato",
+          "RottenPotato",
+          "PrintNightmare",
+          "ZeroLogon",
+          "PowerShell Empire",
+          "Sherlock"
+        ],
+        "Linux Privilege Escalation": [
+          "SUID binaries",
+          "Capabilities",
+          "Kernel exploits",
+          "Dirty Cow",
+          "CVE-2016-5195"
+        ]
+      },
+      "tools": [
+        {
+          "name": "Mimikatz",
+          "description": "Credential dumping",
+          "opsec_considerations": "**Highly signatured** \u2014 use custom builds or alternative tools",
+          "detection_methods": "Credential access alerts",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "Rubeus",
+          "description": "Kerberos manipulation",
+          "opsec_considerations": "Similar to Mimikatz",
+          "detection_methods": "Kerberos event logs",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "Kekeo",
+          "description": "Kerberoasting tool",
+          "opsec_considerations": "Similar to Rubeus",
+          "detection_methods": "Kerberos event logs",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "TgtDeleg",
+          "description": "Kerberos delegation",
+          "opsec_considerations": "Similar to Rubeus",
+          "detection_methods": "Kerberos event logs",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "Kerberoast",
+          "description": "Kerberos ticket cracking",
+          "opsec_considerations": "Similar to Rubeus",
+          "detection_methods": "Kerberos event logs",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "AskTSP",
+          "description": "AS-REP roasting",
+          "opsec_considerations": "Similar to Rubeus",
+          "detection_methods": "Kerberos event logs",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "AutoElevate",
+          "description": "UAC bypass",
+          "opsec_considerations": "Detectable by EDR",
+          "detection_methods": "UAC bypass alerts",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "SweetPotato",
+          "description": "UAC bypass",
+          "opsec_considerations": "Detectable by EDR",
+          "detection_methods": "UAC bypass alerts",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "JuicyPotato",
+          "description": "UAC bypass",
+          "opsec_considerations": "Detectable by EDR",
+          "detection_methods": "UAC bypass alerts",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "RottenPotato",
+          "description": "UAC bypass",
+          "opsec_considerations": "Detectable by EDR",
+          "detection_methods": "UAC bypass alerts",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "PrintNightmare",
+          "description": "Print spooler exploit",
+          "opsec_considerations": "CVE-based; patch if possible",
+          "detection_methods": "Exploit detection",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "ZeroLogon",
+          "description": "Netlogon exploit",
+          "opsec_considerations": "CVE-based; patch if possible",
+          "detection_methods": "Exploit detection",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "PowerShell Empire",
+          "description": "UAC bypass modules",
+          "opsec_considerations": "Similar to above",
+          "detection_methods": "PowerShell logs",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "Sherlock",
+          "description": "Windows vulnerability scanner",
+          "opsec_considerations": "Use for recon only",
+          "detection_methods": "System enumeration",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Windows Privilege Escalation"
+        },
+        {
+          "name": "SUID binaries",
+          "description": "SUID file execution",
+          "opsec_considerations": "**Monitored** \u2014 use custom SUID binaries if possible",
+          "detection_methods": "SUID file enumeration",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Linux Privilege Escalation"
+        },
+        {
+          "name": "Capabilities",
+          "description": "Linux capabilities",
+          "opsec_considerations": "**Monitored** \u2014 use carefully",
+          "detection_methods": "Capability enumeration",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Linux Privilege Escalation"
+        },
+        {
+          "name": "Kernel exploits",
+          "description": "Kernel vulnerabilities",
+          "opsec_considerations": "CVE-based; patch if possible",
+          "detection_methods": "Exploit detection",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Linux Privilege Escalation"
+        },
+        {
+          "name": "Dirty Cow",
+          "description": "Kernel exploit",
+          "opsec_considerations": "CVE-based; patch if possible",
+          "detection_methods": "Exploit detection",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Linux Privilege Escalation"
+        },
+        {
+          "name": "CVE-2016-5195",
+          "description": "SUID exploit",
+          "opsec_considerations": "CVE-based; patch if possible",
+          "detection_methods": "Exploit detection",
+          "tactic": "Privilege Escalation",
+          "subcategory": "Linux Privilege Escalation"
+        }
+      ]
+    },
+    "Defense Evasion": {
+      "subcategories": {
+        "Anti-Virus/EDR Evasion": [
+          "PowerShell Empire",
+          "PoshC2",
+          "AMSI Bypass",
+          "PowerSploit",
+          "SharpHound",
+          "BloodHound",
+          "Rubeus",
+          "Mimikatz",
+          "Process Hacker",
+          "Process Explorer",
+          "Autoruns",
+          "TCPView",
+          "GMER",
+          "RootkitRevealer"
+        ],
+        "Log Clearing": [
+          "wevtutil",
+          "cipher",
+          "SDelete",
+          "Shred",
+          "DBAN",
+          "BleachBit",
+          "CCleaner",
+          "Privazer",
+          "Evidence Eliminator"
+        ],
+        "Traffic Obfuscation": [
+          "Stunnel",
+          "OpenSSL",
+          "Ngrok",
+          "Chisel",
+          "DNSCat",
+          "Iodine"
+        ]
+      },
+      "tools": [
+        {
+          "name": "PowerShell Empire",
+          "description": "Evasion modules",
+          "opsec_considerations": "**Signatured** \u2014 use custom obfuscation",
+          "detection_methods": "PowerShell logs",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "PoshC2",
+          "description": "Evasion modules",
+          "opsec_considerations": "Similar to Empire",
+          "detection_methods": "Same as Empire",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "AMSI Bypass",
+          "description": "AMSI bypass",
+          "opsec_considerations": "Detectable by updated EDR",
+          "detection_methods": "AMSI alerts",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "PowerSploit",
+          "description": "PowerShell post-exploitation",
+          "opsec_considerations": "**Signatured** \u2014 use custom versions",
+          "detection_methods": "PowerShell logs",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "SharpHound",
+          "description": "AD enumeration",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "LDAP queries",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "BloodHound",
+          "description": "AD visualization",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "LDAP queries",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "Rubeus",
+          "description": "Kerberos manipulation",
+          "opsec_considerations": "Use for credential access; detectable",
+          "detection_methods": "Kerberos logs",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "Mimikatz",
+          "description": "Credential dumping",
+          "opsec_considerations": "**Highly signatured**",
+          "detection_methods": "Credential access alerts",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "Process Hacker",
+          "description": "Process manipulation",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "Process monitoring",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "Process Explorer",
+          "description": "Process monitoring",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "Process monitoring",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "Autoruns",
+          "description": "Startup enumeration",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "System enumeration",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "TCPView",
+          "description": "Network enumeration",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "Network monitoring",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "GMER",
+          "description": "Rootkit detection",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "System monitoring",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "RootkitRevealer",
+          "description": "Rootkit detection",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "System monitoring",
+          "tactic": "Defense Evasion",
+          "subcategory": "Anti-Virus/EDR Evasion"
+        },
+        {
+          "name": "wevtutil",
+          "description": "Windows event log clearing",
+          "opsec_considerations": "**Monitored** \u2014 use with caution",
+          "detection_methods": "Event log deletion alerts",
+          "tactic": "Defense Evasion",
+          "subcategory": "Log Clearing"
+        },
+        {
+          "name": "cipher",
+          "description": "File deletion",
+          "opsec_considerations": "**Monitored** \u2014 use securely",
+          "detection_methods": "File deletion logs",
+          "tactic": "Defense Evasion",
+          "subcategory": "Log Clearing"
+        },
+        {
+          "name": "SDelete",
+          "description": "Secure file deletion",
+          "opsec_considerations": "**Better than delete** but still detectable",
+          "detection_methods": "File deletion logs",
+          "tactic": "Defense Evasion",
+          "subcategory": "Log Clearing"
+        },
+        {
+          "name": "Shred",
+          "description": "Secure file deletion (Linux)",
+          "opsec_considerations": "Similar to SDelete",
+          "detection_methods": "File deletion logs",
+          "tactic": "Defense Evasion",
+          "subcategory": "Log Clearing"
+        },
+        {
+          "name": "DBAN",
+          "description": "Disk wiping",
+          "opsec_considerations": "Use only for full system destruction",
+          "detection_methods": "Disk activity",
+          "tactic": "Defense Evasion",
+          "subcategory": "Log Clearing"
+        },
+        {
+          "name": "BleachBit",
+          "description": "System cleaning",
+          "opsec_considerations": "Use for routine cleanup",
+          "detection_methods": "File deletion logs",
+          "tactic": "Defense Evasion",
+          "subcategory": "Log Clearing"
+        },
+        {
+          "name": "CCleaner",
+          "description": "System cleaning",
+          "opsec_considerations": "Similar to BleachBit",
+          "detection_methods": "File deletion logs",
+          "tactic": "Defense Evasion",
+          "subcategory": "Log Clearing"
+        },
+        {
+          "name": "Privazer",
+          "description": "Privacy cleaner",
+          "opsec_considerations": "Similar to BleachBit",
+          "detection_methods": "File deletion logs",
+          "tactic": "Defense Evasion",
+          "subcategory": "Log Clearing"
+        },
+        {
+          "name": "Evidence Eliminator",
+          "description": "Anti-forensics tool",
+          "opsec_considerations": "Use with extreme caution",
+          "detection_methods": "File deletion logs",
+          "tactic": "Defense Evasion",
+          "subcategory": "Log Clearing"
+        },
+        {
+          "name": "Stunnel",
+          "description": "SSL tunneling",
+          "opsec_considerations": "Use for encrypting C2 traffic",
+          "detection_methods": "Certificate validation",
+          "tactic": "Defense Evasion",
+          "subcategory": "Traffic Obfuscation"
+        },
+        {
+          "name": "OpenSSL",
+          "description": "SSL/TLS toolkit",
+          "opsec_considerations": "Generate valid certificates",
+          "detection_methods": "Certificate validation",
+          "tactic": "Defense Evasion",
+          "subcategory": "Traffic Obfuscation"
+        },
+        {
+          "name": "Ngrok",
+          "description": "Tunneling",
+          "opsec_considerations": "**High attribution risk** \u2014 use private infrastructure",
+          "detection_methods": "Tunnel detection",
+          "tactic": "Defense Evasion",
+          "subcategory": "Traffic Obfuscation"
+        },
+        {
+          "name": "Chisel",
+          "description": "Tunneling",
+          "opsec_considerations": "Better than ngrok; still detectable",
+          "detection_methods": "Tunnel detection",
+          "tactic": "Defense Evasion",
+          "subcategory": "Traffic Obfuscation"
+        },
+        {
+          "name": "DNSCat",
+          "description": "DNS tunneling",
+          "opsec_considerations": "Obfuscate queries; use legitimate domains",
+          "detection_methods": "DNS entropy analysis",
+          "tactic": "Defense Evasion",
+          "subcategory": "Traffic Obfuscation"
+        },
+        {
+          "name": "Iodine",
+          "description": "DNS tunneling",
+          "opsec_considerations": "Same as DNSCat",
+          "detection_methods": "DNS entropy analysis",
+          "tactic": "Defense Evasion",
+          "subcategory": "Traffic Obfuscation"
+        }
+      ]
+    },
+    "Credential Access": {
+      "subcategories": {
+        "Credential Dumping": [
+          "Mimikatz",
+          "LaZagne",
+          "Procdump",
+          "Rubeus",
+          "SharpKatz",
+          "DPAPI",
+          "Dploot",
+          "LSASecrets",
+          "SecretsDump",
+          "Cachedump",
+          "Mimikittenz"
+        ],
+        "Password Cracking": [
+          "John the Ripper",
+          "Hashcat",
+          "oclHashcat",
+          "RainbowCrack",
+          "Ophcrack",
+          "Cain",
+          "L0phtCrack"
+        ]
+      },
+      "tools": [
+        {
+          "name": "Mimikatz",
+          "description": "Credential dumping",
+          "opsec_considerations": "**Highly signatured** \u2014 use custom builds or alternative tools",
+          "detection_methods": "Credential access alerts",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "LaZagne",
+          "description": "Credential recovery",
+          "opsec_considerations": "Similar to Mimikatz",
+          "detection_methods": "Credential access alerts",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "Procdump",
+          "description": "Process memory dump",
+          "opsec_considerations": "**LOLBin** \u2014 use for credential extraction",
+          "detection_methods": "Process memory access",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "Rubeus",
+          "description": "Kerberos manipulation",
+          "opsec_considerations": "Similar to Mimikatz",
+          "detection_methods": "Kerberos event logs",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "SharpKatz",
+          "description": ".NET Mimikatz",
+          "opsec_considerations": "Similar to Mimikatz",
+          "detection_methods": "Credential access alerts",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "DPAPI",
+          "description": "DPAPI decryption",
+          "opsec_considerations": "Use for credential extraction",
+          "detection_methods": "DPAPI access",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "Dploot",
+          "description": "DPAPI dumping",
+          "opsec_considerations": "Similar to DPAPI",
+          "detection_methods": "DPAPI access",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "LSASecrets",
+          "description": "LSA secrets dumping",
+          "opsec_considerations": "Similar to Mimikatz",
+          "detection_methods": "LSA access",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "SecretsDump",
+          "description": "Secrets dumping",
+          "opsec_considerations": "Similar to Mimikatz",
+          "detection_methods": "Credential access alerts",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "Cachedump",
+          "description": "Cached credentials",
+          "opsec_considerations": "Similar to Mimikatz",
+          "detection_methods": "Credential access alerts",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "Mimikittenz",
+          "description": "Mimikatz for LSA",
+          "opsec_considerations": "Similar to Mimikatz",
+          "detection_methods": "Credential access alerts",
+          "tactic": "Credential Access",
+          "subcategory": "Credential Dumping"
+        },
+        {
+          "name": "John the Ripper",
+          "description": "Password cracker",
+          "opsec_considerations": "Use offline on captured hashes",
+          "detection_methods": "High CPU usage",
+          "tactic": "Credential Access",
+          "subcategory": "Password Cracking"
+        },
+        {
+          "name": "Hashcat",
+          "description": "Password cracker",
+          "opsec_considerations": "Use offline on captured hashes",
+          "detection_methods": "High CPU/GPU usage",
+          "tactic": "Credential Access",
+          "subcategory": "Password Cracking"
+        },
+        {
+          "name": "oclHashcat",
+          "description": "GPU-accelerated Hashcat",
+          "opsec_considerations": "Same as Hashcat",
+          "detection_methods": "High GPU usage",
+          "tactic": "Credential Access",
+          "subcategory": "Password Cracking"
+        },
+        {
+          "name": "RainbowCrack",
+          "description": "Rainbow table cracker",
+          "opsec_considerations": "Use offline; consider deprecated",
+          "detection_methods": "High disk I/O",
+          "tactic": "Credential Access",
+          "subcategory": "Password Cracking"
+        },
+        {
+          "name": "Ophcrack",
+          "description": "Windows password cracker",
+          "opsec_considerations": "Use offline",
+          "detection_methods": "High CPU usage",
+          "tactic": "Credential Access",
+          "subcategory": "Password Cracking"
+        },
+        {
+          "name": "Cain",
+          "description": "Windows password cracker",
+          "opsec_considerations": "Use offline",
+          "detection_methods": "High CPU usage",
+          "tactic": "Credential Access",
+          "subcategory": "Password Cracking"
+        },
+        {
+          "name": "L0phtCrack",
+          "description": "Windows password cracker",
+          "opsec_considerations": "Deprecated; use alternatives",
+          "detection_methods": "High CPU usage",
+          "tactic": "Credential Access",
+          "subcategory": "Password Cracking"
+        }
+      ]
+    },
+    "Discovery": {
+      "subcategories": {
+        "System Enumeration": [
+          "PowerShell",
+          "CMD",
+          "WMIC",
+          "net",
+          "netstat",
+          "ipconfig",
+          "route",
+          "arp",
+          "nslookup",
+          "ping",
+          "tracert",
+          "netsh",
+          "sc",
+          "reg",
+          "tasklist",
+          "schtasks",
+          "wevtutil",
+          "bash",
+          "ps",
+          "top",
+          "netdiscover"
+        ],
+        "Active Directory Enumeration": [
+          "SharpHound",
+          "BloodHound",
+          "PowerView",
+          "ADExplorer",
+          "LDAPSearch",
+          "LDAPDomainDump",
+          "Impacket"
+        ]
+      },
+      "tools": [
+        {
+          "name": "PowerShell",
+          "description": "Windows automation",
+          "opsec_considerations": "Use encoded commands; AMSI bypass",
+          "detection_methods": "PowerShell logs",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "CMD",
+          "description": "Windows command prompt",
+          "opsec_considerations": "Use with caution",
+          "detection_methods": "Command execution logs",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "WMIC",
+          "description": "WMI command-line",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "WMI event logs",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "net",
+          "description": "Network commands",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "Network enumeration logs",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "netstat",
+          "description": "Network statistics",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "Network enumeration logs",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "ipconfig",
+          "description": "IP configuration",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "System enumeration",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "route",
+          "description": "Routing table",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "Network enumeration",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "arp",
+          "description": "ARP table",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "Network enumeration",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "nslookup",
+          "description": "DNS lookup",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "DNS query logs",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "ping",
+          "description": "ICMP ping",
+          "opsec_considerations": "**LOLBin** \u2014 use with rate limiting",
+          "detection_methods": "ICMP flood detection",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "tracert",
+          "description": "Trace route",
+          "opsec_considerations": "**LOLBin** \u2014 use with rate limiting",
+          "detection_methods": "Network path analysis",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "netsh",
+          "description": "Network configuration",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "Network enumeration",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "sc",
+          "description": "Service control",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "Service enumeration",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "reg",
+          "description": "Registry editor",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "Registry access logs",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "tasklist",
+          "description": "Process list",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "Process enumeration",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "schtasks",
+          "description": "Scheduled tasks",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "Task enumeration",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "wevtutil",
+          "description": "Event log utility",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "Event log access",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "bash",
+          "description": "Unix shell",
+          "opsec_considerations": "Use with encoded commands",
+          "detection_methods": "Shell command logs",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "ps",
+          "description": "Process list (Unix)",
+          "opsec_considerations": "Use for enumeration",
+          "detection_methods": "Process enumeration",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "top",
+          "description": "Process monitor (Unix)",
+          "opsec_considerations": "Use for enumeration",
+          "detection_methods": "Process enumeration",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "netdiscover",
+          "description": "Network discovery (Linux)",
+          "opsec_considerations": "Use passive mode if possible",
+          "detection_methods": "ARP scanning",
+          "tactic": "Discovery",
+          "subcategory": "System Enumeration"
+        },
+        {
+          "name": "SharpHound",
+          "description": "AD enumeration",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "LDAP queries",
+          "tactic": "Discovery",
+          "subcategory": "Active Directory Enumeration"
+        },
+        {
+          "name": "BloodHound",
+          "description": "AD visualization",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "LDAP queries",
+          "tactic": "Discovery",
+          "subcategory": "Active Directory Enumeration"
+        },
+        {
+          "name": "PowerView",
+          "description": "PowerShell AD enumeration",
+          "opsec_considerations": "Use encoded commands",
+          "detection_methods": "PowerShell logs, LDAP queries",
+          "tactic": "Discovery",
+          "subcategory": "Active Directory Enumeration"
+        },
+        {
+          "name": "ADExplorer",
+          "description": "AD explorer (GUI)",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "LDAP queries",
+          "tactic": "Discovery",
+          "subcategory": "Active Directory Enumeration"
+        },
+        {
+          "name": "LDAPSearch",
+          "description": "LDAP query tool",
+          "opsec_considerations": "Use with caution",
+          "detection_methods": "LDAP query logs",
+          "tactic": "Discovery",
+          "subcategory": "Active Directory Enumeration"
+        },
+        {
+          "name": "LDAPDomainDump",
+          "description": "AD domain dumping",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "LDAP query logs",
+          "tactic": "Discovery",
+          "subcategory": "Active Directory Enumeration"
+        },
+        {
+          "name": "Impacket",
+          "description": "Python AD tools",
+          "opsec_considerations": "Use for recon; detectable",
+          "detection_methods": "LDAP queries",
+          "tactic": "Discovery",
+          "subcategory": "Active Directory Enumeration"
+        }
+      ]
+    },
+    "Lateral Movement": {
+      "subcategories": {
+        "Windows Lateral Movement": [
+          "CrackMapExec",
+          "PsExec",
+          "WMIC",
+          "WinRM",
+          "SMBClient",
+          "SMBExec",
+          "Impacket",
+          "WMIExec",
+          "WMIPRVSE",
+          "WMIQuery"
+        ],
+        "Linux Lateral Movement": [
+          "SSH",
+          "SCP",
+          "SFTP",
+          "RSYNC"
+        ]
+      },
+      "tools": [
+        {
+          "name": "CrackMapExec",
+          "description": "Lateral movement tool",
+          "opsec_considerations": "**Detectable** \u2014 use with stealthier alternatives like WMI",
+          "detection_methods": "SMB/WinRM logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Windows Lateral Movement"
+        },
+        {
+          "name": "PsExec",
+          "description": "Remote execution",
+          "opsec_considerations": "**Heavily monitored** \u2014 use WMI or DCOM instead",
+          "detection_methods": "Service creation logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Windows Lateral Movement"
+        },
+        {
+          "name": "WMIC",
+          "description": "WMI command-line",
+          "opsec_considerations": "**LOLBin** \u2014 use for lateral movement",
+          "detection_methods": "WMI event logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Windows Lateral Movement"
+        },
+        {
+          "name": "WinRM",
+          "description": "Remote shell",
+          "opsec_considerations": "**LOLBin** \u2014 better than PsExec",
+          "detection_methods": "WinRM logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Windows Lateral Movement"
+        },
+        {
+          "name": "SMBClient",
+          "description": "SMB client",
+          "opsec_considerations": "Use for file transfer; avoid for execution if possible",
+          "detection_methods": "SMB access logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Windows Lateral Movement"
+        },
+        {
+          "name": "SMBExec",
+          "description": "SMB execution",
+          "opsec_considerations": "Similar to PsExec",
+          "detection_methods": "SMB/WinRM logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Windows Lateral Movement"
+        },
+        {
+          "name": "Impacket",
+          "description": "Python lateral movement tools",
+          "opsec_considerations": "Use with stealthier techniques",
+          "detection_methods": "SMB/WinRM logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Windows Lateral Movement"
+        },
+        {
+          "name": "WMIExec",
+          "description": "WMI execution",
+          "opsec_considerations": "**LOLBin** \u2014 better than PsExec",
+          "detection_methods": "WMI event logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Windows Lateral Movement"
+        },
+        {
+          "name": "WMIPRVSE",
+          "description": "WMI execution",
+          "opsec_considerations": "Similar to WMIExec",
+          "detection_methods": "WMI event logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Windows Lateral Movement"
+        },
+        {
+          "name": "WMIQuery",
+          "description": "WMI query",
+          "opsec_considerations": "**LOLBin** \u2014 use for enumeration",
+          "detection_methods": "WMI event logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Windows Lateral Movement"
+        },
+        {
+          "name": "SSH",
+          "description": "Secure shell",
+          "opsec_considerations": "Use key-based auth; avoid password auth",
+          "detection_methods": "SSH access logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Linux Lateral Movement"
+        },
+        {
+          "name": "SCP",
+          "description": "Secure copy",
+          "opsec_considerations": "Use key-based auth",
+          "detection_methods": "SSH access logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Linux Lateral Movement"
+        },
+        {
+          "name": "SFTP",
+          "description": "Secure FTP",
+          "opsec_considerations": "Use key-based auth",
+          "detection_methods": "SSH access logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Linux Lateral Movement"
+        },
+        {
+          "name": "RSYNC",
+          "description": "File sync",
+          "opsec_considerations": "Use key-based auth",
+          "detection_methods": "SSH access logs",
+          "tactic": "Lateral Movement",
+          "subcategory": "Linux Lateral Movement"
+        }
+      ]
+    },
+    "Collection": {
+      "subcategories": {
+        "Data Collection": [
+          "PowerShell",
+          "Python",
+          "Perl",
+          "Ruby",
+          "PHP",
+          "Node.js",
+          "Go",
+          "Rust"
+        ],
+        "Screenshot & Keylogging": [
+          "Frida",
+          "Screenshot",
+          "Keylogger"
+        ]
+      },
+      "tools": [
+        {
+          "name": "PowerShell",
+          "description": "Windows automation",
+          "opsec_considerations": "Use encoded commands; AMSI bypass",
+          "detection_methods": "PowerShell logs",
+          "tactic": "Collection",
+          "subcategory": "Data Collection"
+        },
+        {
+          "name": "Python",
+          "description": "Scripting language",
+          "opsec_considerations": "Use with encoded/obfuscated scripts",
+          "detection_methods": "Process execution",
+          "tactic": "Collection",
+          "subcategory": "Data Collection"
+        },
+        {
+          "name": "Perl",
+          "description": "Scripting language",
+          "opsec_considerations": "Similar to Python",
+          "detection_methods": "Process execution",
+          "tactic": "Collection",
+          "subcategory": "Data Collection"
+        },
+        {
+          "name": "Ruby",
+          "description": "Scripting language",
+          "opsec_considerations": "Similar to Python",
+          "detection_methods": "Process execution",
+          "tactic": "Collection",
+          "subcategory": "Data Collection"
+        },
+        {
+          "name": "PHP",
+          "description": "Scripting language",
+          "opsec_considerations": "Similar to Python",
+          "detection_methods": "Process execution",
+          "tactic": "Collection",
+          "subcategory": "Data Collection"
+        },
+        {
+          "name": "Node.js",
+          "description": "JavaScript runtime",
+          "opsec_considerations": "Similar to Python",
+          "detection_methods": "Process execution",
+          "tactic": "Collection",
+          "subcategory": "Data Collection"
+        },
+        {
+          "name": "Go",
+          "description": "Go language",
+          "opsec_considerations": "Similar to Python",
+          "detection_methods": "Process execution",
+          "tactic": "Collection",
+          "subcategory": "Data Collection"
+        },
+        {
+          "name": "Rust",
+          "description": "Rust language",
+          "opsec_considerations": "Similar to Python",
+          "detection_methods": "Process execution",
+          "tactic": "Collection",
+          "subcategory": "Data Collection"
+        },
+        {
+          "name": "Frida",
+          "description": "Dynamic instrumentation",
+          "opsec_considerations": "Use for research only",
+          "detection_methods": "Process injection detection",
+          "tactic": "Collection",
+          "subcategory": "Screenshot & Keylogging"
+        },
+        {
+          "name": "Screenshot",
+          "description": "Screen capture",
+          "opsec_considerations": "Use sparingly; detectable by EDR",
+          "detection_methods": "Screen capture API calls",
+          "tactic": "Collection",
+          "subcategory": "Screenshot & Keylogging"
+        },
+        {
+          "name": "Keylogger",
+          "description": "Key logging",
+          "opsec_considerations": "**Highly detectable** \u2014 avoid if possible",
+          "detection_methods": "Keyboard hook detection",
+          "tactic": "Collection",
+          "subcategory": "Screenshot & Keylogging"
+        }
+      ]
+    },
+    "Exfiltration": {
+      "subcategories": {
+        "File Transfer": [
+          "Netcat",
+          "Socat",
+          "Telnet",
+          "OpenSSL",
+          "Stunnel",
+          "Ngrok",
+          "Chisel",
+          "SSH",
+          "SCP",
+          "SFTP",
+          "RSYNC",
+          "FTP",
+          "TFTP",
+          "Wget",
+          "Curl",
+          "Bitsadmin",
+          "Certutil",
+          "Regsvr32",
+          "Rundll32",
+          "MSHTA"
+        ],
+        "DNS Tunneling": [
+          "DNSCat",
+          "Iodine",
+          "DNS2TCP"
+        ]
+      },
+      "tools": [
+        {
+          "name": "Netcat",
+          "description": "Network utility",
+          "opsec_considerations": "Use encrypted channels; avoid plaintext",
+          "detection_methods": "Network anomalies",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Socat",
+          "description": "Network utility",
+          "opsec_considerations": "Similar to Netcat",
+          "detection_methods": "Network anomalies",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Telnet",
+          "description": "Remote shell",
+          "opsec_considerations": "**Plaintext** \u2014 avoid if possible",
+          "detection_methods": "Plaintext credentials",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "OpenSSL",
+          "description": "SSL/TLS toolkit",
+          "opsec_considerations": "Use for encrypting exfil traffic",
+          "detection_methods": "Certificate validation",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Stunnel",
+          "description": "SSL tunneling",
+          "opsec_considerations": "Good for encrypting C2 traffic",
+          "detection_methods": "Certificate validation",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Ngrok",
+          "description": "Tunneling",
+          "opsec_considerations": "**High attribution risk** \u2014 use private infrastructure",
+          "detection_methods": "Tunnel detection",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Chisel",
+          "description": "Tunneling",
+          "opsec_considerations": "Better than ngrok; still detectable",
+          "detection_methods": "Tunnel detection",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "SSH",
+          "description": "Secure shell",
+          "opsec_considerations": "Use key-based auth; avoid password auth",
+          "detection_methods": "SSH access logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "SCP",
+          "description": "Secure copy",
+          "opsec_considerations": "Use key-based auth",
+          "detection_methods": "SSH access logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "SFTP",
+          "description": "Secure FTP",
+          "opsec_considerations": "Use key-based auth",
+          "detection_methods": "SSH access logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "RSYNC",
+          "description": "File sync",
+          "opsec_considerations": "Use key-based auth",
+          "detection_methods": "SSH access logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "FTP",
+          "description": "File transfer",
+          "opsec_considerations": "**Plaintext** \u2014 avoid if possible",
+          "detection_methods": "Plaintext credentials",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "TFTP",
+          "description": "Trivial FTP",
+          "opsec_considerations": "**Plaintext** \u2014 avoid if possible",
+          "detection_methods": "Network anomalies",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Wget",
+          "description": "File downloader",
+          "opsec_considerations": "Use with caution",
+          "detection_methods": "HTTP request logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Curl",
+          "description": "HTTP client",
+          "opsec_considerations": "Use with caution",
+          "detection_methods": "HTTP request logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Bitsadmin",
+          "description": "BITS client",
+          "opsec_considerations": "**LOLBin** \u2014 used for file download",
+          "detection_methods": "File download logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Certutil",
+          "description": "Certificate utility",
+          "opsec_considerations": "**LOLBin** \u2014 used for file download",
+          "detection_methods": "File download logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Regsvr32",
+          "description": "DLL registration",
+          "opsec_considerations": "**LOLBin** \u2014 used for file download",
+          "detection_methods": "File download logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "Rundll32",
+          "description": "DLL execution",
+          "opsec_considerations": "**LOLBin** \u2014 used for file download",
+          "detection_methods": "File download logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "MSHTA",
+          "description": "HTML Application",
+          "opsec_considerations": "**LOLBin** \u2014 used for file download",
+          "detection_methods": "File download logs",
+          "tactic": "Exfiltration",
+          "subcategory": "File Transfer"
+        },
+        {
+          "name": "DNSCat",
+          "description": "DNS tunneling",
+          "opsec_considerations": "Obfuscate queries; use legitimate domains",
+          "detection_methods": "DNS entropy analysis",
+          "tactic": "Exfiltration",
+          "subcategory": "DNS Tunneling"
+        },
+        {
+          "name": "Iodine",
+          "description": "DNS tunneling",
+          "opsec_considerations": "Same as DNSCat",
+          "detection_methods": "DNS entropy analysis",
+          "tactic": "Exfiltration",
+          "subcategory": "DNS Tunneling"
+        },
+        {
+          "name": "DNS2TCP",
+          "description": "DNS tunneling",
+          "opsec_considerations": "Same as DNSCat",
+          "detection_methods": "DNS entropy analysis",
+          "tactic": "Exfiltration",
+          "subcategory": "DNS Tunneling"
+        }
+      ]
+    },
+    "Impact": {
+      "subcategories": {
+        "Denial of Service": [
+          "hping3",
+          "Slowloris",
+          "Masscan"
+        ],
+        "Data Destruction": [
+          "Shred",
+          "Wipe",
+          "DBAN"
+        ]
+      },
+      "tools": [
+        {
+          "name": "hping3",
+          "description": "IP packet generator",
+          "opsec_considerations": "**Highly detectable** \u2014 use only for authorized testing",
+          "detection_methods": "Network flood detection",
+          "tactic": "Impact",
+          "subcategory": "Denial of Service"
+        },
+        {
+          "name": "Slowloris",
+          "description": "DoS attack",
+          "opsec_considerations": "**Detectable** \u2014 use only for authorized testing",
+          "detection_methods": "Connection flood detection",
+          "tactic": "Impact",
+          "subcategory": "Denial of Service"
+        },
+        {
+          "name": "Masscan",
+          "description": "DoS/scanner",
+          "opsec_considerations": "**Detectable** \u2014 use only for authorized testing",
+          "detection_methods": "Network flood detection",
+          "tactic": "Impact",
+          "subcategory": "Denial of Service"
+        },
+        {
+          "name": "Shred",
+          "description": "Secure file deletion",
+          "opsec_considerations": "Use for evidence destruction only",
+          "detection_methods": "File deletion logs",
+          "tactic": "Impact",
+          "subcategory": "Data Destruction"
+        },
+        {
+          "name": "Wipe",
+          "description": "Disk wiping",
+          "opsec_considerations": "Use only for full system destruction",
+          "detection_methods": "Disk activity",
+          "tactic": "Impact",
+          "subcategory": "Data Destruction"
+        },
+        {
+          "name": "DBAN",
+          "description": "Disk wiping",
+          "opsec_considerations": "Use only for full system destruction",
+          "detection_methods": "Disk activity",
+          "tactic": "Impact",
+          "subcategory": "Data Destruction"
+        }
+      ]
+    },
+    "Command & Control": {
+      "subcategories": {
+        "C2 Frameworks": [
+          "Cobalt Strike",
+          "Empire",
+          "PoshC2",
+          "Sliver",
+          "Havoc",
+          "Covenant",
+          "Mythic",
+          "Rattler"
+        ],
+        "Tunneling": [
+          "Ngrok",
+          "Chisel",
+          "DNSCat",
+          "Iodine",
+          "Stunnel",
+          "OpenSSL"
+        ]
+      },
+      "tools": [
+        {
+          "name": "Cobalt Strike",
+          "description": "C2 framework",
+          "opsec_considerations": "**Signatured** \u2014 use custom Malleable C2 profiles",
+          "detection_methods": "C2 beacon signatures",
+          "tactic": "Command & Control",
+          "subcategory": "C2 Frameworks"
+        },
+        {
+          "name": "Empire",
+          "description": "PowerShell C2",
+          "opsec_considerations": "**Heavily flagged** \u2014 use custom stagers",
+          "detection_methods": "PowerShell logs, C2 beacons",
+          "tactic": "Command & Control",
+          "subcategory": "C2 Frameworks"
+        },
+        {
+          "name": "PoshC2",
+          "description": "PowerShell C2",
+          "opsec_considerations": "Similar to Empire",
+          "detection_methods": "Same as Empire",
+          "tactic": "Command & Control",
+          "subcategory": "C2 Frameworks"
+        },
+        {
+          "name": "Sliver",
+          "description": "C2 framework (Go)",
+          "opsec_considerations": "**Better OpSec** than PowerShell frameworks",
+          "detection_methods": "C2 beacons",
+          "tactic": "Command & Control",
+          "subcategory": "C2 Frameworks"
+        },
+        {
+          "name": "Havoc",
+          "description": "C2 framework (C#)",
+          "opsec_considerations": "Similar to Sliver",
+          "detection_methods": "C2 beacons",
+          "tactic": "Command & Control",
+          "subcategory": "C2 Frameworks"
+        },
+        {
+          "name": "Covenant",
+          "description": ".NET C2 framework",
+          "opsec_considerations": "**Signatured** \u2014 use custom builds",
+          "detection_methods": "C2 beacons, .NET behavior",
+          "tactic": "Command & Control",
+          "subcategory": "C2 Frameworks"
+        },
+        {
+          "name": "Mythic",
+          "description": "C2 framework",
+          "opsec_considerations": "Multi-agent; customize profiles",
+          "detection_methods": "C2 beacons",
+          "tactic": "Command & Control",
+          "subcategory": "C2 Frameworks"
+        },
+        {
+          "name": "Rattler",
+          "description": "C2 framework",
+          "opsec_considerations": "Older; similar concerns",
+          "detection_methods": "C2 beacons",
+          "tactic": "Command & Control",
+          "subcategory": "C2 Frameworks"
+        },
+        {
+          "name": "Ngrok",
+          "description": "Tunneling",
+          "opsec_considerations": "**High attribution risk** \u2014 use private infrastructure",
+          "detection_methods": "Tunnel detection",
+          "tactic": "Command & Control",
+          "subcategory": "Tunneling"
+        },
+        {
+          "name": "Chisel",
+          "description": "Tunneling",
+          "opsec_considerations": "Better than ngrok; still detectable",
+          "detection_methods": "Tunnel detection",
+          "tactic": "Command & Control",
+          "subcategory": "Tunneling"
+        },
+        {
+          "name": "DNSCat",
+          "description": "DNS tunneling",
+          "opsec_considerations": "Obfuscate queries; use legitimate domains",
+          "detection_methods": "DNS entropy analysis",
+          "tactic": "Command & Control",
+          "subcategory": "Tunneling"
+        },
+        {
+          "name": "Iodine",
+          "description": "DNS tunneling",
+          "opsec_considerations": "Same as DNSCat",
+          "detection_methods": "DNS entropy analysis",
+          "tactic": "Command & Control",
+          "subcategory": "Tunneling"
+        },
+        {
+          "name": "Stunnel",
+          "description": "SSL tunneling",
+          "opsec_considerations": "Use for encrypting C2 traffic",
+          "detection_methods": "Certificate validation",
+          "tactic": "Command & Control",
+          "subcategory": "Tunneling"
+        },
+        {
+          "name": "OpenSSL",
+          "description": "SSL/TLS toolkit",
+          "opsec_considerations": "Generate valid certificates",
+          "detection_methods": "Certificate validation",
+          "tactic": "Command & Control",
+          "subcategory": "Tunneling"
+        }
+      ]
+    },
+    "OpSec Best Practices by Tool Category": {
+      "subcategories": {
+        "General Rules": [],
+        "Tool-Specific OpSec Tips": []
+      },
+      "tools": []
+    },
+    "Detection Indicators to Monitor": {
+      "subcategories": {
+        "Network-Level": [],
+        "Host-Level": [],
+        "Application-Level": [],
+        "Cloud-Level": []
+      },
+      "tools": []
+    },
+    "Countermeasures for Common Detection Methods": {
+      "subcategories": {
+        "Avoiding WAF Signatures": [],
+        "Avoiding EDR/AV": [],
+        "Avoiding Network Monitoring": [],
+        "Avoiding Log Detection": []
+      },
+      "tools": []
+    },
+    "Tool Substitution Matrix": {
+      "subcategories": {},
+      "tools": []
+    },
+    "References": {
+      "subcategories": {},
+      "tools": []
+    }
+  },
+  "best_practices": {
+    "general": [
+      "1. **Never use default configurations** \u2014 customize all tools",
+      "2. **Rotate infrastructure regularly** \u2014 domains, IPs, certificates",
+      "3. **Use encrypted channels** \u2014 HTTPS, SSH, TLS"
+    ],
+    "tool_specific": {
+      "Metasploit": [
+        "Use custom templates and encoders",
+        "Modify default Malleable C2 profiles",
+        "Use staged payloads with custom droppers",
+        "Avoid default port 4444"
+      ],
+      "Burp Suite": [
+        "Customize User-Agent header",
+        "Match target site traffic patterns",
+        "Use Burp Community with custom headers",
+        "Add random delays between requests"
+      ],
+      "Nmap": [
+        "Use `-T2` timing instead of `-T4`",
+        "Add decoy hosts",
+        "Randomize source ports",
+        "Limit scan scope"
+      ],
+      "Hydra": [
+        "Add random delays between attempts",
+        "Rotate source IPs if possible",
+        "Use custom wordlists",
+        "Limit concurrent connections",
+        "Use custom stagers",
+        "Modify default C2 profiles",
+        "Use domain fronting",
+        "Add jitter to beacons"
+      ],
+      "Cobalt Strike": [
+        "Use Malleable C2 profiles",
+        "Customize sleep times and jitter",
+        "Use domain fronting",
+        "Modify default Malleable C2 profiles"
+      ],
+      "Mimikatz": [
+        "Use custom builds",
+        "Run from memory if possible",
+        "Clear LSASS memory after use",
+        "Consider alternatives like Rubeus",
+        "Use encrypted channels (stunnel)",
+        "Avoid plaintext protocols if possible",
+        "Use legitimate ports when possible"
+      ],
+      "PowerShell": [
+        "Use encoded commands",
+        "Implement AMSI bypass",
+        "Use LOLBins (Certutil, Bitsadmin, etc.)",
+        "Avoid default execution policies",
+        "Use private registries",
+        "Avoid default image names",
+        "Rotate credentials regularly",
+        "Use least-privilege IAM roles",
+        "--"
+      ]
+    }
+  },
+  "detection_indicators": {
+    "Network-Level": [
+      "Unusual port scanning patterns",
+      "High-frequency DNS queries",
+      "Large file transfers at odd hours",
+      "Unusual protocol usage (DNS tunneling, ICMP tunneling)",
+      "Certificate validation failures",
+      "Beacon-like regular connections"
+    ],
+    "Host-Level": [
+      "Process creation from unusual locations",
+      "PowerShell with encoded commands",
+      "LOLBin execution patterns",
+      "Registry modifications in persistence locations",
+      "Scheduled task creation",
+      "Service creation/modification",
+      "DLL loading from unusual paths",
+      "Memory injection indicators"
+    ],
+    "Application-Level": [
+      "SQL injection patterns in web traffic",
+      "Unusual User-Agent strings",
+      "Brute-force authentication attempts",
+      "File upload/download patterns",
+      "Web shell indicators",
+      "Request patterns matching known tools"
+    ],
+    "Cloud-Level": [
+      "Unusual API access patterns",
+      "Resource creation/deletion at scale",
+      "Privilege escalation attempts",
+      "Cross-region data transfers",
+      "Unusual service account usage",
+      "--"
+    ]
+  },
+  "countermeasures": {
+    "Avoiding WAF Signatures": [
+      "Encode payloads (Base64, URL encoding, Unicode)",
+      "Fragment requests",
+      "Use alternative HTTP methods",
+      "Modify User-Agent to match target",
+      "Add random delays between requests"
+    ],
+    "Avoiding EDR/AV": [
+      "Use LOLBins (Certutil, Bitsadmin, Regsvr32, etc.)",
+      "Implement AMSI bypass",
+      "Use in-memory execution (reflective DLL injection)",
+      "Modify process memory directly",
+      "Disable security features temporarily (risky)"
+    ],
+    "Avoiding Network Monitoring": [
+      "Use encrypted channels (HTTPS, SSH, TLS)",
+      "Blend traffic patterns with legitimate activity",
+      "Use domain fronting",
+      "Add jitter to C2 beacons",
+      "Operate during business hours",
+      "Limit data transfer sizes"
+    ],
+    "Avoiding Log Detection": [
+      "Clear event logs post-operation",
+      "Modify log timestamps (timestomp)",
+      "Disable logging temporarily (risky)",
+      "Use techniques that don't generate logs",
+      "Rotate tools and infrastructure regularly",
+      "--"
+    ]
+  },
+  "substitution_matrix": {
+    "Metasploit": {
+      "alternative": "Custom exploits, Sliver",
+      "notes": "Sliver (Go) is less signatured"
+    },
+    "Empire": {
+      "alternative": "Sliver, Havoc",
+      "notes": "Go frameworks are better than PowerShell"
+    },
+    "Nmap": {
+      "alternative": "Masscan (with care), RustScan",
+      "notes": "Masscan is faster but louder"
+    },
+    "Burp Suite": {
+      "alternative": "OWASP ZAP, manual testing",
+      "notes": "OWASP ZAP is open-source"
+    },
+    "Hydra": {
+      "alternative": "Medusa, Ncrack",
+      "notes": "Similar detection risk"
+    },
+    "Mimikatz": {
+      "alternative": "Rubeus, LaZagne",
+      "notes": "Rubeus is .NET-based"
+    },
+    "PsExec": {
+      "alternative": "WMIExec, WinRM",
+      "notes": "WMI is LOLBin"
+    },
+    "Netcat": {
+      "alternative": "Socat, PowerShell",
+      "notes": "PowerShell is built-in"
+    },
+    "Ngrok": {
+      "alternative": "Chisel, custom infrastructure",
+      "notes": "Private tunnels are better"
+    },
+    "Cobalt Strike": {
+      "alternative": "Sliver, Covenant",
+      "notes": "Go frameworks have better OpSec"
+    }
+  }
+}

@@ -1,0 +1,89 @@
+name: virustotal
+version: 1.0.0
+category: threat_intelligence
+description: VirusTotal API integration for threat intelligence and malware analysis
+author: AutonomAI Team
+license: MIT
+
+execution:
+  remote:
+    base_url: https://www.virustotal.com/api/v3
+    timeout: 30
+    rate_limit:
+      requests_per_minute: 4
+      requests_per_day: 500
+    auth:
+      type: api_key
+      header: x-apikey
+
+schemas:
+  input:
+    type: object
+    required:
+      - resource
+    properties:
+      resource:
+        type: string
+        description: URL, IP address, domain, or file hash to analyze
+        examples:
+          - "8.8.8.8"
+          - "example.com"
+          - "https://example.com"
+          - "44d88612fea8a8f36de82e1278abb02f"
+      scan_type:
+        type: string
+        enum: [url, ip, domain, file]
+        description: Type of resource to scan
+        default: auto
+
+  output:
+    type: object
+    properties:
+      malicious:
+        type: integer
+        description: Number of malicious detections
+      suspicious:
+        type: integer
+        description: Number of suspicious detections
+      harmless:
+        type: integer
+        description: Number of harmless detections
+      detection_ratio:
+        type: string
+        description: Detection ratio (malicious/total)
+      scan_date:
+        type: string
+        description: Date of last scan
+      permalink:
+        type: string
+        description: Link to VirusTotal report
+
+opsec:
+  enabled: true
+  risk_level: low
+  noise_level: low
+  detection_methods:
+    - API calls to external service
+    - IP address and domain lookups
+  evasion_recommendations:
+    - Use proxy chains for IP lookups
+    - Implement rate limiting
+    - Cache results to reduce API calls
+
+dependencies:
+  - name: requests
+    version: ">=2.28.0"
+
+health_check:
+  enabled: true
+  endpoint: https://www.virustotal.com/api/v3
+  interval: 60
+  timeout: 5
+
+hooks:
+  pre_execution:
+    - validate_api_key
+    - check_rate_limit
+  post_execution:
+    - cache_results
+    - update_statistics

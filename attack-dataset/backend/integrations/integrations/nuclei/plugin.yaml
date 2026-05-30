@@ -1,0 +1,72 @@
+name: nuclei
+version: 1.0.0
+category: security_tools
+description: ProjectDiscovery Nuclei — template-based vulnerability scanning
+author: AutonomAI Team
+license: MIT
+
+execution:
+  local:
+    binary: nuclei
+    timeout: 300
+    sandbox: true
+
+schemas:
+  input:
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - scan_target
+          - list_templates
+        default: scan_target
+      target:
+        type: string
+        description: Target URL or host
+      templates:
+        type: string
+        description: Template path or tag filter (e.g. cves/, tags=cve)
+      severity:
+        type: string
+        description: Comma-separated severities (info,low,medium,high,critical)
+      tags:
+        type: string
+        description: Template tags filter
+    required:
+      - operation
+
+  output:
+    type: object
+    properties:
+      success:
+        type: boolean
+      operation:
+        type: string
+      terminal_lines:
+        type: array
+        items:
+          type: string
+      structured:
+        type: object
+
+opsec:
+  enabled: true
+  risk_level: medium
+  noise_level: medium
+  detection_methods:
+    - WAF template fingerprinting
+    - High-volume HTTP probes
+  evasion_recommendations:
+    - Limit severity and template scope
+    - Rate-limit concurrent requests
+
+dependencies:
+  - name: nuclei
+    version: ">=3.0"
+    install_url: https://github.com/projectdiscovery/nuclei
+
+health_check:
+  enabled: true
+  command: "nuclei -version"
+  expected_output: "Nuclei"

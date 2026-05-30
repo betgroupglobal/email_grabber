@@ -1,0 +1,195 @@
+name: jailbreak_ai
+version: 1.0.0
+category: ai_services
+description: Jailbreak AI chat completions API integration for uncensored LLM interactions
+author: AutonomAI Team
+license: MIT
+
+# Execution configuration
+execution:
+  remote:
+    base_url: https://jail-break.chat/v1
+    auth_type: bearer_token
+    auth_token: ${JAILBREAK_API_KEY}
+    timeout: 120
+    default_headers:
+      Content-Type: application/json
+
+# Input/Output schemas
+schemas:
+  input:
+    type: object
+    properties:
+      messages:
+        type: array
+        description: List of chat messages
+        items:
+          type: object
+          properties:
+            role:
+              type: string
+              enum: [system, user, assistant]
+            content:
+              type: string
+      model:
+        type: string
+        default: jailbreak-ai
+        description: Model to use for completion
+      temperature:
+        type: number
+        default: 0.7
+        minimum: 0
+        maximum: 2
+      max_tokens:
+        type: integer
+        default: 2048
+        minimum: 1
+        maximum: 8192
+      stream:
+        type: boolean
+        default: false
+        description: Whether to stream the response
+      # Pentest analysis parameters
+      scan_data:
+        type: object
+        description: Scan results for AI analysis (nmap, etc.)
+      target_info:
+        type: object
+        description: Target information for attack planning
+      test_config:
+        type: object
+        description: Configuration for offensive test initiation
+        properties:
+          test_type:
+            type: string
+            enum: [port_scan, vulnerability_scan, service_enum, web_scan, custom]
+          target:
+            type: string
+          parameters:
+            type: object
+          risk_level:
+            type: string
+            enum: [low, medium, high, critical]
+      operation:
+        type: string
+        enum: [chat, assistant_chat, assistant_agent, analyze_scan, generate_plan, initiate_test, execute_attack_step, guided_phase_plan, redteam_automation, multi_target_automation, continuous_monitoring, adaptive_replanning, council_tactical, council_opsec, council_architect, council_exploit, council_conductor, replan_attack_chain, list_models, get_model_info, count_tokens]
+        default: chat
+        description: Operation mode for the plugin
+      grounding_pack:
+        type: object
+        description: CouncilGroundingPack from Knowledge Engine (dataset hits + ML predictions)
+      agent_memos:
+        type: array
+        description: Prior agent memos for council_conductor merge
+      suggested_action:
+        type: string
+        description: Conductor action hint (reinitiate_chain, patch_chain, pause, etc.)
+      # Red Team Automation parameters
+      redteam_config:
+        type: object
+        description: Configuration for red team automation
+        properties:
+          target:
+            type: string
+            description: Target IP, domain, or range
+          aggression_level:
+            type: integer
+            default: 5
+            minimum: 1
+            maximum: 10
+            description: Aggression level 1-10
+          phases:
+            type: array
+            items:
+              type: string
+              enum: ["reconnaissance", "initial_access", "privilege_escalation", "lateral_movement", "impact", "reporting"]
+            description: "Phases to execute (default: all)"
+      # Model management parameters
+      model_id:
+        type: string
+        description: Model ID for detailed information retrieval
+    required: [messages]
+  output:
+    type: object
+    properties:
+      success:
+        type: boolean
+      content:
+        type: string
+        description: Generated response content
+      model:
+        type: string
+      usage:
+        type: object
+        properties:
+          prompt_tokens:
+            type: integer
+          completion_tokens:
+            type: integer
+          total_tokens:
+            type: integer
+      raw_response:
+        type: object
+        description: Full API response
+      # Pentest analysis outputs
+      analysis:
+        type: object
+        description: Structured vulnerability analysis
+      attack_plan:
+        type: object
+        description: Generated attack plan with phases
+      test_id:
+        type: string
+        description: ID for initiated offensive test
+      # Model management outputs
+      models:
+        type: array
+        description: List of available models
+      count:
+        type: integer
+        description: Number of available models
+      available_model_ids:
+        type: array
+        description: List of model IDs
+      total_tokens:
+        type: integer
+        description: Estimated token count
+      character_count:
+        type: integer
+        description: Total character count
+      message_count:
+        type: integer
+        description: Number of messages
+
+# OpSec configuration - AI services have unique considerations
+opsec:
+  enabled: true
+  risk_level: medium
+  noise_level: low
+  detection_methods:
+    - "Outbound HTTPS to jail-break.chat domain"
+    - "AI-generated content patterns in logs"
+  evasion_recommendations:
+    - "Use for research and testing only"
+    - "Be aware that prompts may be logged by the service"
+    - "Consider local LLM alternatives for sensitive data"
+
+# Dependencies
+dependencies: []
+
+# Health check configuration
+health_check:
+  enabled: true
+  endpoint: /models
+  interval: 60
+  timeout: 10
+
+# Event hooks
+hooks:
+  before_execution:
+    - validate_message_format
+    - check_rate_limits
+  after_execution:
+    - log_usage_metrics
+  on_error:
+    - log_failure

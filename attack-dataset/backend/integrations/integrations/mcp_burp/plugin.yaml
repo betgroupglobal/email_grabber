@@ -1,0 +1,52 @@
+name: mcp_burp
+version: 1.0.0
+category: security_tools
+description: Burp Suite via Model Context Protocol (PortSwigger MCP Server)
+author: AutonomAI Team
+license: MIT
+
+execution:
+  local:
+    delegate: orchestrator
+    timeout: 120
+
+schemas:
+  input:
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - list_servers
+          - list_mcp_tools
+          - call_mcp_tool
+        default: list_mcp_tools
+      mcp_server:
+        type: string
+        default: burp
+      mcp_tool:
+        type: string
+        description: Burp MCP tool name (e.g. send_http1_request)
+      arguments:
+        type: object
+        description: Tool arguments passed to MCP tools/call
+    required:
+      - operation
+
+  output:
+    type: object
+    properties:
+      success:
+        type: boolean
+      terminal_lines:
+        type: array
+        items:
+          type: string
+
+opsec:
+  enabled: true
+  risk_level: medium
+  noise_level: low
+
+health_check:
+  enabled: false

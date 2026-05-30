@@ -1,0 +1,91 @@
+name: nmap
+version: 1.0.0
+category: security_tools
+description: Network mapper and security scanner for network discovery and security auditing
+author: AutonomAI Team
+license: MIT
+
+execution:
+  local:
+    binary: nmap
+    timeout: 300
+    sandbox: true
+    capabilities:
+      - NET_RAW
+      - NET_ADMIN
+    default_args:
+      - "-sV"
+      - "--open"
+      - "-T4"
+      - "-oX"
+      - "-"
+
+schemas:
+  input:
+    type: object
+    properties:
+      target:
+        type: string
+        description: Target IP address or hostname
+      ports:
+        type: string
+        description: Port specification (e.g., "80,443" or "1-1000")
+      scan_type:
+        type: string
+        enum: ["tcp", "udp", "syn", "connect"]
+        default: "tcp"
+      timing:
+        type: string
+        enum: ["T1", "T2", "T3", "T4", "T5"]
+        default: "T4"
+    required:
+      - target
+
+  output:
+    type: object
+    properties:
+      success:
+        type: boolean
+      xml_output:
+        type: string
+        description: Nmap XML output
+      parsed_results:
+        type: object
+        description: Parsed scan results
+      scan_time:
+        type: number
+        description: Scan duration in seconds
+
+opsec:
+  enabled: true
+  risk_level: medium
+  noise_level: medium
+  detection_methods:
+    - IDS/IPS signature detection
+    - Firewall logs
+    - Netflow anomalies
+    - Port scan detection
+  evasion_recommendations:
+    - Use slow timing (T1-T2) for stealth
+    - Use decoy hosts with -D option
+    - Randomize source ports with --source-port
+    - Fragment packets with -f
+    - Use custom data length with --data-length
+
+dependencies:
+  - name: nmap
+    version: ">=7.0"
+    install_url: https://nmap.org/download.html
+
+health_check:
+  enabled: true
+  command: "nmap --version"
+  expected_output: "Nmap version"
+
+hooks:
+  before_execution:
+    - validate_target_format
+    - check_rate_limits
+  after_execution:
+    - parse_xml_output
+    - collect_scan_artifacts

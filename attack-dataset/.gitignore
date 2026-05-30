@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+*.egg
+
+# Node
+node_modules/
+frontend/dashboard/build/
+
+# Go
+backend/realtime_analyzer/realtime_analyzer
+
+# Data / models (too large for git)
+data/processed/
+data/models/
+data/cache/
+
+# Env
+.env
+
+# macOS
+.DS_Store
